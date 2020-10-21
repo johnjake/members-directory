@@ -1,0 +1,1 @@
+D:\dev\github-directory\buildSrc\build\classes\kotlin\main\Android.class;D:\dev\github-directory\buildSrc\build\classes\kotlin\main\BuildPlugins.class;D:\dev\github-directory\buildSrc\build\classes\kotlin\main\Configs.class;D:\dev\github-directory\buildSrc\build\classes\kotlin\main\PluginVersion.class
