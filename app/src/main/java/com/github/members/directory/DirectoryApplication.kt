@@ -1,13 +1,14 @@
 package com.github.members.directory
 
 import android.app.Application
-import com.github.members.directory.di.networkModule
-import com.github.members.directory.di.storageModule
+import androidx.paging.ExperimentalPagingApi
+import com.github.members.directory.di.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 
 class DirectoryApplication : Application() {
+    @ExperimentalPagingApi
     override fun onCreate() {
         super.onCreate()
         startKoin {
@@ -15,7 +16,11 @@ class DirectoryApplication : Application() {
             androidContext(this@DirectoryApplication)
             modules(listOf(
                 networkModule,
-                storageModule
+                storageModule,
+                databaseModule,
+                mediatorModule,
+                repositoryModule,
+                viewModelModule
             ))
         }
     }

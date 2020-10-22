@@ -12,6 +12,9 @@ abstract class MembersDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insertMembers(members: DBMembers)
 
+    @Query("DELETE FROM members")
+    abstract suspend fun clearAllKeys()
+
     @Query("SELECT * FROM members")
     abstract fun getRepositoryMembers(): PagingSource<Int, DBMembers>
 }
