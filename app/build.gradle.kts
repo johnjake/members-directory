@@ -101,7 +101,7 @@ dependencies {
         )
     )
 
-    implementation(project(mapOf("path" to ":android-baseplate-persistence")))
+    implementation(project(mapOf("path" to ":baseplate-persistence")))
 
     implementation("com.android.support:support-annotations:$androidAnnotation")
     implementation("androidx.annotation:annotation:$androidxAnnotation")

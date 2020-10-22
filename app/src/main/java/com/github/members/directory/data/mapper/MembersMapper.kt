@@ -1,7 +1,8 @@
 package com.github.members.directory.data.mapper
 
+import com.github.members.baseplate_persistence.model.DBMembers
 import com.github.members.directory.data.vo.Members
-import model.DBMembers
+
 
 class MembersMapper private constructor() {
 

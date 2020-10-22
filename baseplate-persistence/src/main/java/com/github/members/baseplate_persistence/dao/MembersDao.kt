@@ -1,11 +1,11 @@
-package dao
+package com.github.members.baseplate_persistence.dao
 
 import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import model.DBMembers
+import com.github.members.baseplate_persistence.model.DBMembers
 
 @Dao
 abstract class MembersDao {

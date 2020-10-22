@@ -1,4 +1,4 @@
-package model
+package com.github.members.baseplate_persistence.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
