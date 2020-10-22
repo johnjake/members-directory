@@ -7,6 +7,16 @@ import com.github.members.directory.data.vo.Members
 
 class MembersPagingAdapter() : PagingDataAdapter<Members, MembersPagingViewHolder>(repositoryComparator) {
 
+    companion object {
+        private val repositoryComparator = object : DiffUtil.ItemCallback<Members>() {
+            override fun areItemsTheSame(oldItem: Members, newItem: Members): Boolean =
+                    oldItem.login == newItem.login
+
+            override fun areContentsTheSame(oldItem: Members, newItem: Members): Boolean =
+                    oldItem == newItem
+        }
+    }
+
     override fun onBindViewHolder(holder: MembersPagingViewHolder, position: Int) {
         getItem(position)?.let { user ->
             holder.bind(user)
@@ -17,14 +27,6 @@ class MembersPagingAdapter() : PagingDataAdapter<Members, MembersPagingViewHolde
        return MembersPagingViewHolder.create(parent)
     }
 
-    companion object {
-        private val repositoryComparator = object : DiffUtil.ItemCallback<Members>() {
-            override fun areItemsTheSame(oldItem: Members, newItem: Members): Boolean =
-                oldItem.login == newItem.login
 
-            override fun areContentsTheSame(oldItem: Members, newItem: Members): Boolean =
-                oldItem == newItem
-        }
-    }
 }
 

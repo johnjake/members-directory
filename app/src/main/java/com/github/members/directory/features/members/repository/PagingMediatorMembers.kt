@@ -48,8 +48,8 @@ class PagingMediatorMembers(
                     appDatabase.remoteKeysDao().clearRemoteKeys()
                     appDatabase.membersDao().clearAllKeys()
                 }
-                val prevKey = if (page == DEFAULT_PAGE_INDEX) 0 else page - 1
-                val nextKey = if (isEndOfList) page - 1 else page + 1
+                val prevKey = if (page == DEFAULT_PAGE_INDEX) null else page - 1
+                val nextKey = if (isEndOfList) null else page + 1
                 val dbKeys = response.map {
                     DBRemoteKeys(repoId = it.id, prevKey = prevKey, nextKey = nextKey)
                 }

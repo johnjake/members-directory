@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.item_members.*
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
@@ -35,7 +36,7 @@ class MembersActivity : AppCompatActivity() {
     private fun implementSearchMovies() {
         searchJob?.cancel()
         searchJob = lifecycleScope.launch {
-            viewModel.fetchGithubMembersStream().collectLatest { data ->
+            viewModel.fetchGithubMembersStream().distinctUntilChanged().collectLatest { data ->
                 val dbData = data.mapSync { user -> mapper.fromStorage(user) }
                 memberAdapter.submitData(dbData)
             }
@@ -46,10 +47,7 @@ class MembersActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        initAdapter()
-        implementSearchMovies()
-
+       initAdapter()
         var isDark = getThemeStatePref()
         if (isDark) {
             // dark theme is on
@@ -69,14 +67,14 @@ class MembersActivity : AppCompatActivity() {
             if (isDark) {
                 search_input.setBackgroundResource(R.drawable.search_input_dark_style)
                 root_layout.setBackgroundColor(ContextCompat.getColor(this, R.color.black))
-                textDetails.setTextColor(ContextCompat.getColor(this, R.color.black))
-                textUserName.setTextColor(ContextCompat.getColor(this, R.color.black))
+
             } else {
                 search_input.setBackgroundResource(R.drawable.search_input_style)
                 root_layout.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
 
             }
         }
+        implementSearchMovies()
     }
 
     private fun initAdapter() {
@@ -108,14 +106,7 @@ class MembersActivity : AppCompatActivity() {
             }
         }
 
-        lifecycleScope.launch {
-            memberAdapter.loadStateFlow
-                .distinctUntilChangedBy { it.refresh }
-                .filter { it.refresh is LoadState.Loading }
-                .collectLatest {
-                    rvMembers.scrollToPosition(0)
-                }
-        }
+
     }
 
     private fun saveThemeStatePref(isDark: Boolean) {
