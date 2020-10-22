@@ -6,11 +6,11 @@ import androidx.room.TypeConverters
 import com.github.members.baseplate_persistence.dao.MembersDao
 import com.github.members.baseplate_persistence.dao.RemoteKeysDao
 import com.github.members.baseplate_persistence.model.DBMembers
-
+import com.github.members.baseplate_persistence.model.DBRemoteKeys
 
 @Database(
-    entities = [DBMembers::class],
-    version = 2,
+    entities = [DBMembers::class, DBRemoteKeys::class],
+    version = 3,
     exportSchema = false
 )
 

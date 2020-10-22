@@ -9,15 +9,15 @@ import com.github.members.baseplate_persistence.model.DBMembers
 import com.github.members.directory.features.members.repository.PagingRepositoryMembers
 import kotlinx.coroutines.flow.Flow
 
-@ExperimentalPagingApi
+
 class MembersViewModel  constructor(
     private val integrator: PagingRepositoryMembers
 ) : ViewModel() {
 
+    @ExperimentalPagingApi
     fun fetchGithubMembersStream(): Flow<PagingData<DBMembers>> {
         return integrator
             .getGithubMembersDB()
             .cachedIn(viewModelScope)
     }
-
 }

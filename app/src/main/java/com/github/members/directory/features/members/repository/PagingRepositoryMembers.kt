@@ -10,19 +10,19 @@ import com.github.members.directory.api.ApiServices
 import com.github.members.directory.data.mapper.MembersMapper
 import kotlinx.coroutines.flow.Flow
 
-@ExperimentalPagingApi
+
 class PagingRepositoryMembers(
     private val apiServices: ApiServices,
-    private val appDatabase: AppDatabase,
-    private val mapper: MembersMapper
+    private val appDatabase: AppDatabase
 ) {
 
+    @ExperimentalPagingApi
     fun getGithubMembersDB(pagingConfig: PagingConfig = getDefaultPageConfig()): Flow<PagingData<DBMembers>> {
         val pagingSourceFactory = { appDatabase.membersDao().getRepositoryMembers() }
         return Pager(
             config = pagingConfig,
             pagingSourceFactory = pagingSourceFactory,
-            remoteMediator = PagingMediatorMembers(apiServices = apiServices, appDatabase = appDatabase, mapper = mapper)
+            remoteMediator = PagingMediatorMembers(apiServices = apiServices, appDatabase = appDatabase)
         ).flow
     }
 

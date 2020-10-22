@@ -21,15 +21,15 @@ val networkModule = module(override = true) {
     factory { providesOkHttpClient() }
     factory { providesGson() }
     factory { providesBaseUrl() }
-    factory { providesAvatar() }
+    factory { providesBaseUrl() }
     single { providesRetrofit(get(), get(), get()) }
     factory { provideInterceptors() }
     single { providesApiServices(get()) }
 }
 
-const val API = "api"
+
 const val VERSION = 3
-const val CATEGORY = "movie"
+
 
 fun providesOkHttpClient(): OkHttpClient {
     val logging = HttpLoggingInterceptor()
@@ -48,12 +48,12 @@ fun providesGson(): Gson {
         .create()
 }
 
-fun providesBaseUrl(): String {
-    return "$BASE_URL/$VERSION/"
-}
-
 fun providesAvatar(): String {
     return BuildConfig.AVATAR_URL
+}
+
+fun providesBaseUrl(): String {
+    return BuildConfig.BASE_URL
 }
 
 

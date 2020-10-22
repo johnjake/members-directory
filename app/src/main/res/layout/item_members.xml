@@ -37,18 +37,18 @@
         tools:src="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/fullname"
+        android:id="@+id/textUserName"
         android:hint="@string/username"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:textStyle="bold"
-        android:textColor="@color/white"
+        android:textColor="@color/pinkOne"
         android:textSize="16sp"
         android:fontFamily="@font/inter_regular"
         app:layout_constraintBottom_toTopOf="@+id/textDetails"
-        app:layout_constraintEnd_toStartOf="@+id/playIcon"
+        app:layout_constraintEnd_toStartOf="@+id/noteIcon"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/avatar"
         app:layout_constraintTop_toTopOf="parent"
@@ -64,15 +64,15 @@
         android:layout_marginEnd="@dimen/pixels_8"
         android:layout_marginTop="@dimen/pixels_4"
         android:textSize="14sp"
-        android:textColor="@color/black"
+        android:textColor="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/playIcon"
+        app:layout_constraintEnd_toStartOf="@+id/noteIcon"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/avatar"
-        app:layout_constraintTop_toBottomOf="@+id/fullname" />
+        app:layout_constraintTop_toBottomOf="@+id/textUserName" />
 
     <ImageView
-        android:id="@+id/playIcon"
+        android:id="@+id/noteIcon"
         android:layout_width="@dimen/pixels_16"
         android:layout_height="@dimen/pixels_16"
         android:src="@drawable/ic_note_icon"

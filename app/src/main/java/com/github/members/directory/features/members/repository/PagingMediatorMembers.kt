@@ -19,8 +19,10 @@ import java.lang.Exception
 @ExperimentalPagingApi
 class PagingMediatorMembers(
     private val apiServices: ApiServices,
-    private val appDatabase: AppDatabase,
-    private val mapper: MembersMapper) : RemoteMediator<Int, DBMembers>() {
+    private val appDatabase: AppDatabase
+) : RemoteMediator<Int, DBMembers>() {
+
+    private val mapper: MembersMapper = MembersMapper.getInstance()
 
     override suspend fun load(
         loadType: LoadType,
