@@ -1,4 +1,4 @@
-package com.github.members.directory.features.members.paging
+package com.github.members.directory.features.members.repository
 
 import android.annotation.SuppressLint
 import android.util.Log
