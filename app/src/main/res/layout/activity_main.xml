@@ -4,15 +4,54 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".features.members.MembersActivity"
+    android:background="@color/white"
+    android:id="@+id/root_layout">
 
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/news_rv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/pixels_8"
+        android:layout_marginEnd="@dimen/pixels_8"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_input" />
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_switcher"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:layout_marginEnd="@dimen/pixels_24"
+        android:layout_marginBottom="@dimen/pixels_24"
+        app:backgroundTint="@color/white_alpha_70"
+        app:fabCustomSize="@dimen/pixels_56"
+        app:fabSize="auto"
+        app:maxImageSize="@dimen/pixels_44"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/ic_cloud_icon"
+        android:contentDescription="@string/toDark_mood" />
+
+    <EditText
+        android:drawablePadding="@dimen/pixels_8"
+        android:drawableStart="@drawable/ic_search_gray_24dp"
+        android:textColor="@color/content_text_color"
+        android:hint="@string/search"
+        android:background="@drawable/search_input_style"
+        android:id="@+id/search_input"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/pixels_24"
+        android:layout_marginTop="@dimen/pixels_8"
+        android:layout_marginEnd="@dimen/pixels_16"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
