@@ -1,8 +1,10 @@
+import Configs.circleImageViewVersion
+
 object Configs {
     const val app = ":app"
     const val persistenceApp = ":android-baseplate-persistence"
     const val projectCompleteName = "github-members-directory"
-
+    const val circleImageViewVersion = "3.0.0"
     const val daggerVersion = "2.29.1"
     const val coroutineCore = "1.3.7"
     const val coroutineAndroid = "1.3.6"
@@ -59,4 +61,8 @@ object Android {
     const val compileSdkVersion = 29
     const val targetSdkVersion = 29
     const val minSdkVersion = 26
+}
+
+object Libs {
+    const val circleImageView = "de.hdodenhof:circleimageview:$circleImageViewVersion"
 }
