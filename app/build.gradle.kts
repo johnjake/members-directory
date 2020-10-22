@@ -112,6 +112,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.0.2")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
     implementation("androidx.recyclerview:recyclerview:1.1.0")
+    implementation ("com.google.android.material:material:1.2.1")
 
     //Dagger
     api("com.google.dagger:dagger-android:$daggerVersion")
