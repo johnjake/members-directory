@@ -1,4 +1,4 @@
-package com.github.members.directory.features.git_user
+package com.github.members.directory.features.users
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.members.directory.R
 import com.github.members.directory.data.mapper.MembersMapper
-import com.github.members.directory.features.git_user.adapter.MembersPagingAdapter
+import com.github.members.directory.features.users.adapter.MembersPagingAdapter
 import kotlinx.android.synthetic.main.fragment_members.*
 import kotlinx.android.synthetic.main.item_members.*
 import kotlinx.coroutines.Job

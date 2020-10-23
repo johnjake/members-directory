@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/userFragment"
-        android:name="com.github.members.directory.features.git_user.UsersFragment"
+        android:name="com.github.members.directory.features.users.UsersFragment"
         tools:layout="@layout/fragment_members"
         android:label="CinemaFragment" >
         <action
