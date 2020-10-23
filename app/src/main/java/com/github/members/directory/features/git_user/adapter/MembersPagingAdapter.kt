@@ -1,4 +1,4 @@
-package com.github.members.directory.features.members.adapter
+package com.github.members.directory.features.git_user.adapter
 
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter

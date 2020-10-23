@@ -1,7 +1,7 @@
 package com.github.members.directory.di
 
 import androidx.paging.ExperimentalPagingApi
-import com.github.members.directory.features.members.repository.PagingMediatorMembers
+import com.github.members.directory.features.git_user.repository.PagingMediatorMembers
 import org.koin.dsl.module
 
 @ExperimentalPagingApi
