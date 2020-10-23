@@ -19,7 +19,7 @@ class MembersPagingAdapter() : PagingDataAdapter<Members, MembersPagingViewHolde
 
     override fun onBindViewHolder(holder: MembersPagingViewHolder, position: Int) {
         getItem(position)?.let { user ->
-            holder.bind(user)
+            holder.bind(user, position)
         }
     }
 
