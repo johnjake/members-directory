@@ -1,8 +1,6 @@
-package com.github.members.directory.features.members.adapter
+package com.github.members.directory.features.git_user.adapter
 
 import android.annotation.SuppressLint
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,11 +14,9 @@ import com.github.members.directory.data.vo.Members
 import com.github.members.directory.di.providesAvatar
 import com.github.members.directory.utils.ImageUtils
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import timber.log.Timber
 
 
 class MembersPagingViewHolder(

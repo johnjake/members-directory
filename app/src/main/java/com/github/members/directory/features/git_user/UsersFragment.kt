@@ -1,10 +1,14 @@
-package com.github.members.directory.features.members
+package com.github.members.directory.features.git_user
 
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadState
@@ -12,19 +16,16 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.members.directory.R
 import com.github.members.directory.data.mapper.MembersMapper
-import com.github.members.directory.features.members.adapter.MembersPagingAdapter
-import kotlinx.android.synthetic.main.activity_main.*
+import com.github.members.directory.features.git_user.adapter.MembersPagingAdapter
+import kotlinx.android.synthetic.main.fragment_members.*
 import kotlinx.android.synthetic.main.item_members.*
-import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.distinctUntilChangedBy
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MembersActivity : AppCompatActivity() {
+class UsersFragment : Fragment() {
     private lateinit var resultLayout: LinearLayoutManager
     private val mapper = MembersMapper.getInstance()
     private val memberAdapter: MembersPagingAdapter by lazy { MembersPagingAdapter() }
@@ -43,22 +44,27 @@ class MembersActivity : AppCompatActivity() {
         }
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? = inflater.inflate(R.layout.fragment_members, container, false)
+
     @ExperimentalPagingApi
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-       initAdapter()
-        var isDark = getThemeStatePref()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initAdapter(view)
+        var isDark = getThemeStatePref() ?: false
         if (isDark) {
             // dark theme is on
             search_input.setBackgroundResource(R.drawable.search_input_dark_style)
-            root_layout.setBackgroundColor(ContextCompat.getColor(this, R.color.black))
-            textDetails.setTextColor(ContextCompat.getColor(this, R.color.black))
-            textUserName.setTextColor(ContextCompat.getColor(this, R.color.black))
+            root_layout.setBackgroundColor(ContextCompat.getColor(view.context, R.color.black))
+            textDetails.setTextColor(ContextCompat.getColor(view.context, R.color.black))
+            textUserName.setTextColor(ContextCompat.getColor(view.context, R.color.black))
         } else {
             // light theme is on
             search_input.setBackgroundResource(R.drawable.search_input_style)
-            root_layout.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+            root_layout.setBackgroundColor(ContextCompat.getColor(view.context, R.color.white))
 
         }
 
@@ -66,23 +72,23 @@ class MembersActivity : AppCompatActivity() {
             isDark = !isDark
             if (isDark) {
                 search_input.setBackgroundResource(R.drawable.search_input_dark_style)
-                root_layout.setBackgroundColor(ContextCompat.getColor(this, R.color.black))
+                root_layout.setBackgroundColor(ContextCompat.getColor(view.context, R.color.black))
 
             } else {
                 search_input.setBackgroundResource(R.drawable.search_input_style)
-                root_layout.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+                root_layout.setBackgroundColor(ContextCompat.getColor(view.context, R.color.white))
 
             }
         }
         implementSearchMovies()
     }
 
-    private fun initAdapter() {
-        resultLayout = LinearLayoutManager(this).apply {
+    private fun initAdapter(view: View) {
+        resultLayout = LinearLayoutManager(view.context).apply {
             orientation = LinearLayoutManager.VERTICAL
         }
 
-        val decoration = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
+        val decoration = DividerItemDecoration(view.context, DividerItemDecoration.VERTICAL)
 
         rvMembers.apply {
             layoutManager = resultLayout
@@ -91,7 +97,8 @@ class MembersActivity : AppCompatActivity() {
         }
 
         memberAdapter.addLoadStateListener { loadState ->
-            resultProgress.isVisible = loadState.source.refresh is LoadState.Loading
+            val resultLoading: Boolean? = loadState.source.refresh is LoadState.Loading
+            if (resultProgress != null) resultProgress.isVisible = resultLoading ?: false
             // Toast on any error, regardless of whether it came from RemoteMediator or PagingSource
             val errorState = loadState.source.append as? LoadState.Error
                 ?: loadState.source.prepend as? LoadState.Error
@@ -99,30 +106,41 @@ class MembersActivity : AppCompatActivity() {
                 ?: loadState.prepend as? LoadState.Error
             errorState?.let {
                 Toast.makeText(
-                    this,
+                    context,
                     "\uD83D\uDE28 Whoops ${it.error}",
                     Toast.LENGTH_LONG
                 ).show()
             }
         }
-
-
     }
 
     private fun saveThemeStatePref(isDark: Boolean) {
-        val pref = applicationContext.getSharedPreferences(SHARED_PREF, MODE_PRIVATE)
-        val editor = pref.edit()
-        editor.putBoolean(DARK_MODE, isDark)
-        editor.apply()
+        val pref = context?.getSharedPreferences(SHARED_PREF,
+            AppCompatActivity.MODE_PRIVATE
+        )
+        val editor = pref?.edit()
+        editor?.putBoolean(DARK_MODE, isDark)
+        editor?.apply()
     }
 
-    private fun getThemeStatePref(): Boolean {
-        val pref = applicationContext.getSharedPreferences(SHARED_PREF, MODE_PRIVATE)
-        return pref.getBoolean(DARK_MODE, false)
+    private fun getThemeStatePref(): Boolean? {
+        val pref = context?.getSharedPreferences(SHARED_PREF,
+            AppCompatActivity.MODE_PRIVATE
+        )
+        return pref?.getBoolean(DARK_MODE, false)
     }
 
-    companion object {
+    companion object{
         const val DARK_MODE = "isDark"
         const val SHARED_PREF = "myPref"
+
+        private const val ARG_CAUGHT = "FragmentMembers"
+        fun newInstance(caught: String): UsersFragment {
+            val args: Bundle = Bundle()
+            args.putSerializable(ARG_CAUGHT, caught)
+            val fragment = UsersFragment()
+            fragment.arguments = args
+            return fragment
+        }
     }
 }

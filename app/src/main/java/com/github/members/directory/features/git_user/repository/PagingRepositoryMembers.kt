@@ -1,4 +1,4 @@
-package com.github.members.directory.features.members.repository
+package com.github.members.directory.features.git_user.repository
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
@@ -7,7 +7,6 @@ import androidx.paging.PagingData
 import com.github.members.baseplate_persistence.AppDatabase
 import com.github.members.baseplate_persistence.model.DBMembers
 import com.github.members.directory.api.ApiServices
-import com.github.members.directory.data.mapper.MembersMapper
 import kotlinx.coroutines.flow.Flow
 
 
