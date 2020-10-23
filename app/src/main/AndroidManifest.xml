@@ -12,7 +12,7 @@
     <application
         android:allowBackup="true"
         android:name=".DirectoryApplication"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_github"
         android:label="@string/app_name"
         android:roundIcon="@drawable/ic_github"
         android:supportsRtl="true"

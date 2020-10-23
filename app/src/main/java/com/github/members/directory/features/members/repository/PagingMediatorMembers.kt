@@ -45,6 +45,7 @@ class PagingMediatorMembers(
             appDatabase.withTransaction {
                 // clear all tables in the database
                 if (loadType == LoadType.REFRESH) {
+
                     appDatabase.remoteKeysDao().clearRemoteKeys()
                     appDatabase.membersDao().clearAllKeys()
                 }
