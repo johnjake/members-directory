@@ -31,6 +31,6 @@ class PagingRepositoryMembers(
     }
 
     companion object {
-       private const val DEFAULT_PAGE_SIZE = 40
+       private const val DEFAULT_PAGE_SIZE = 10
     }
 }

@@ -27,7 +27,7 @@ class MembersPagingViewHolder(
     @SuppressLint("SetTextI18n")
     fun bind(user: Members) {
         txtUsername.text = user.login
-        txtDetails.text = user.type
+        txtDetails.text = user.id.toString()
         imgAvatar.load(url + user.id)
     }
 

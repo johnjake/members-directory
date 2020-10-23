@@ -9,6 +9,7 @@ class MembersMapper private constructor() {
     fun mapFromDomain(from: Members): Map<String, Any>{
         val map = mutableMapOf<String, Any>()
         map[GITHUB_MEMBERS] = DBMembers(
+            membersId = 0,
             login = from.login,
             id = from.id,
             node_id = from.node_id,
@@ -56,7 +57,7 @@ class MembersMapper private constructor() {
 
     fun fromData(from: Members): DBMembers {
         return DBMembers(
-            membersId = 0,
+            0,
             login = from.login,
             id = from.id,
             node_id = from.node_id,
