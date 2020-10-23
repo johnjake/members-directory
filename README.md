@@ -15,7 +15,7 @@ members-directory app is about users directory listing features are, list of Git
     Architechture Pattern: MVVM 
 
     USER API:
-    Github users list can be obtained from https://api.github.com/users?since=0 in JSON format.
+    Github users list can be obtained from [user api](https://api.github.com/users?since=1) in JSON format.
 
     PROFILE API:
-    Profile info can be obtained from https://api.github.com/users/[username] in JSON format.
+    Profile info can be obtained from [user api](https://api.github.com/users/tawk) in JSON format.
