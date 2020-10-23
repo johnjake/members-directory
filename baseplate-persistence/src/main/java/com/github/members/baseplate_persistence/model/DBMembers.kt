@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = DBMembers.TABLE_NAME_MEMBERS)
 data class DBMembers(
     @PrimaryKey(autoGenerate = true)
-    val membersId: Int = 0,
+    val membersId: Int,
     val login: String? = "",
     val id: Int = 0,
     val node_id: String? = "",

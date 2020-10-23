@@ -1,7 +1,10 @@
 package com.github.members.directory.ext
 
 import android.app.Activity
+import android.content.Context
 import android.content.res.Resources
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Environment
 import android.view.View
@@ -10,6 +13,7 @@ import android.view.ViewTreeObserver
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import timber.log.Timber
 import java.io.File
 import java.io.IOException
 
@@ -71,4 +75,28 @@ fun Activity.createImageFile(): File {
         ".jpg", /* suffix */
         storageDir /* directory */
     )
+}
+
+fun Context.isOnline(context: Context): Boolean {
+    val connectivityManager =
+        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val capabilities =
+        connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+    if (capabilities != null) {
+        when {
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> {
+                Timber.d( "NetworkCapabilities.TRANSPORT_CELLULAR")
+                return true
+            }
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> {
+                Timber.d( "NetworkCapabilities.TRANSPORT_WIFI")
+                return true
+            }
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> {
+                Timber.d( "NetworkCapabilities.TRANSPORT_ETHERNET")
+                return true
+            }
+        }
+    }
+    return false
 }
