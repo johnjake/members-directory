@@ -2,7 +2,6 @@ package com.github.members.directory.features.main
 
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -10,7 +9,7 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.fragment.NavHostFragment
 import androidx.paging.ExperimentalPagingApi
 import com.github.members.directory.R
-import com.github.members.directory.features.git_user.UsersFragment
+import com.github.members.directory.features.users.UsersFragment
 import com.github.members.directory.features.search.SearchFragment
 import com.github.members.directory.features.visited.VisitedFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView

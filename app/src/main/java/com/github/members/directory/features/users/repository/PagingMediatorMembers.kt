@@ -1,4 +1,4 @@
-package com.github.members.directory.features.git_user.repository
+package com.github.members.directory.features.users.repository
 
 import android.annotation.SuppressLint
 import android.util.Log
