@@ -83,21 +83,41 @@
                     android:textSize="16sp"/>
 
             </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/pixels_18"
+                android:layout_marginStart="@dimen/pixels_16"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/inter_regular"
+                android:text="@string/top_follower" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/pixels_100"
+                android:layout_height="@dimen/pixels_110"
                 android:orientation="vertical"
                 android:layout_marginEnd="@dimen/pixels_16"
                 android:layout_marginStart="@dimen/pixels_16"
                 android:background="@drawable/ic_main_rectagle_text"
-                android:layout_marginTop="@dimen/pixels_20">
+                android:layout_marginTop="@dimen/pixels_4">
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvFollowing"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
-                    tools:listitem="@layout/item_following" />
+                    tools:listitem="@layout/item_followers" />
             </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/pixels_18"
+                android:layout_marginStart="@dimen/pixels_16"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/inter_regular"
+                android:text="@string/profile" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -106,14 +126,13 @@
                 android:layout_marginEnd="@dimen/pixels_16"
                 android:layout_marginStart="@dimen/pixels_16"
                 android:background="@drawable/ic_main_rectagle_text"
-                android:layout_marginTop="@dimen/pixels_20">
+                android:layout_marginTop="@dimen/pixels_4">
                 <TextView
                     android:id="@+id/txtName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_regular"
                     android:text="@string/name_john_smith"
-                    android:textStyle="bold"
                     android:textSize="16sp"/>
                 <TextView
                     android:id="@+id/txtCompany"
@@ -121,8 +140,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_regular"
                     android:text="@string/company_apple"
-                    android:textStyle="bold"
-                    android:textSize="16sp"/>
+                    android:textSize="15sp"/>
 
                 <TextView
                     android:id="@+id/txtBlog"
@@ -130,25 +148,29 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_regular"
                     android:text="@string/blog_www_apple_com"
-                    android:textStyle="bold"
-                    android:textSize="16sp"/>
+                    android:textSize="15sp"/>
 
             </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/pixels_18"
+                android:layout_marginStart="@dimen/pixels_16"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/inter_regular"
+                android:text="@string/biography" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginTop="@dimen/pixels_20"
+                android:layout_marginTop="@dimen/pixels_4"
                 android:background="@drawable/ic_main_rectagle_text"
                 android:layout_marginEnd="@dimen/pixels_16"
                 android:layout_marginStart="@dimen/pixels_16">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/inter_regular"
-                    android:text="@string/notes"
-                    android:textStyle="bold"
-                    android:textSize="16sp"/>
+
                 <TextView
                     android:id="@+id/txtBiography"
                     android:layout_width="match_parent"
@@ -156,9 +178,9 @@
                     android:fontFamily="@font/inter_regular"
                     android:layout_marginTop="@dimen/pixels_8"
                     android:text="@string/this_is_me"
-                    android:maxLines="10"
+                    android:maxLines="4"
                     android:lines="4"
-                    android:textSize="16sp"/>
+                    android:textSize="15sp"/>
             </LinearLayout>
 
 

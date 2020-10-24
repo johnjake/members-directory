@@ -17,4 +17,7 @@
     <string name="blog_www_apple_com">Blog: www.apple.com</string>
     <string name="company_apple">Company: Apple</string>
     <string name="name_john_smith">Name: John Smith</string>
+    <string name="top_follower">Top Follower:</string>
+    <string name="profile">Profile:</string>
+    <string name="biography">Biography:</string>
 </resources>

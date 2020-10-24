@@ -8,15 +8,19 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.github.members.directory.R
 import com.github.members.directory.data.State
+import com.github.members.directory.data.vo.Members
 import com.github.members.directory.data.vo.Profiles
 import com.github.members.directory.di.providesAvatar
 import com.github.members.directory.ext.toast
+import com.github.members.directory.features.details.adapter.FollowingAdapter
 import com.github.members.directory.features.main.MainActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.android.synthetic.main.fragment_details.view.*
+import kotlinx.android.synthetic.main.fragment_details.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlinx.android.synthetic.main.toolbar_profile_details.toolbar_back as back
 import kotlinx.android.synthetic.main.toolbar_profile_details.userProfileName as profileName
@@ -29,8 +33,9 @@ import kotlinx.android.synthetic.main.fragment_details.txtCompany as company
 import kotlinx.android.synthetic.main.fragment_details.txtBlog as githubUrl
 
 class DetailsFragment : Fragment() {
-
+    private lateinit var resultLayout: LinearLayoutManager
     private val viewModel: DetailsViewModel by viewModel()
+    private val followerAdapter: FollowingAdapter by lazy { FollowingAdapter() }
     private val imgUrl = providesAvatar()
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,10 +47,12 @@ class DetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         bottomNavigationViewVisibility()
         userProfileObserver()
-
+        followerObserver()
+        initAdapter(view)
         arguments?.let {
             val arg = DetailsFragmentArgs.fromBundle(it)
             viewModel.getProfileDetails(arg.username)
+            viewModel.getFollowerList(arg.username)
         }
     }
 
@@ -63,6 +70,16 @@ class DetailsFragment : Fragment() {
         super.onResume()
     }
 
+    private fun initAdapter(view: View) {
+        resultLayout = LinearLayoutManager(view.context).apply {
+            orientation = LinearLayoutManager.HORIZONTAL
+        }
+        rvFollowing.apply {
+            layoutManager = resultLayout
+            adapter = followerAdapter
+        }
+    }
+
     private fun bottomNavigationViewVisibility() {
         val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.bottom_nav)
         bottomNavigationView?.visibility = View.GONE
@@ -72,10 +89,22 @@ class DetailsFragment : Fragment() {
         viewModel.stateProfiles.observe(viewLifecycleOwner, Observer { state -> handleDataProfile(state) })
     }
 
+    private fun followerObserver() {
+        viewModel.stateList.observe(viewLifecycleOwner, Observer { state -> handleDataFollowers(state) })
+    }
+
     private fun handleDataProfile(state: State<Profiles>) {
         when(state) {
             is State.Data -> handleProfileSuccess(state.data)
             is State.Error -> handleProfileFailed(state.error)
+            else -> handleProfileNull()
+        }
+    }
+
+    private fun handleDataFollowers(state: State<List<Members>>) {
+        when(state) {
+            is State.Data -> handleFollowerSuccess(state.data)
+            is State.Error -> handleFollowerFailed(state.error)
             else -> handleProfileNull()
         }
     }
@@ -98,6 +127,16 @@ class DetailsFragment : Fragment() {
 
     private fun handleProfileNull() {
         activity?.toast("Error: no data found")
+    }
+
+    private fun handleFollowerSuccess(list: List<Members>) {
+        if(list.isNotEmpty()) {
+            followerAdapter.dataSource = list
+        }
+    }
+
+    private fun handleFollowerFailed(error: Throwable) {
+        activity?.toast("Error: ${error.localizedMessage}")
     }
 
     companion object{

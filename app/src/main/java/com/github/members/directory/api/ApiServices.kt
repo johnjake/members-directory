@@ -17,4 +17,9 @@ interface ApiServices {
     suspend fun getGithubProfile(
             @Path("userName") userName: String
     ): Profiles
+
+    @GET("/users/{userName}/followers")
+    suspend fun getUserFollowers(
+            @Path("userName") userName: String
+    ): List<Members>
 }
