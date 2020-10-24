@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.DrawableRes
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -26,11 +27,12 @@ class MembersPagingViewHolder(
     private val imgAvatar: CircleImageView = view.findViewById(R.id.avatar)
     private val txtDetails: TextView = view.findViewById(R.id.textDetails)
     private val txtUsername: TextView = view.findViewById(R.id.textUserName)
+    private val layoutOut: ConstraintLayout = view.findViewById(R.id.itemLayout)
     private val url = providesAvatar()
     private val scope = CoroutineScope(Dispatchers.IO)
 
     @SuppressLint("SetTextI18n")
-    fun bind(user: Members, position: Int) {
+    fun bind(user: Members, position: Int, itemClickListener: MembersPagingAdapter.DetailsOnClickListener) {
         txtUsername.text = user.login
         txtDetails.text = user.type
         imgAvatar.load(url + user.id)
@@ -38,6 +40,10 @@ class MembersPagingViewHolder(
             setImageStrokeDrawable(R.drawable.stroke_avatar_gold)
         } else {
             setImageStrokeDrawable(R.drawable.stroke_avatar_gray)
+        }
+
+        layoutOut.setOnClickListener {
+            user.login?.let { user -> itemClickListener.detailsOnClick(user) }
         }
     }
 

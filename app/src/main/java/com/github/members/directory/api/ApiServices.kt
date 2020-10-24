@@ -1,7 +1,9 @@
 package com.github.members.directory.api
 
 import com.github.members.directory.data.vo.Members
+import com.github.members.directory.data.vo.Profiles
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiServices {
@@ -11,4 +13,13 @@ interface ApiServices {
         @Query("since") pageNumber: Int
     ) : List<Members>
 
+    @GET("/users/{userName}")
+    suspend fun getGithubProfile(
+            @Path("userName") userName: String
+    ): Profiles
+
+    @GET("/users/{userName}/followers")
+    suspend fun getUserFollowers(
+            @Path("userName") userName: String
+    ): List<Members>
 }

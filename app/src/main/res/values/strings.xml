@@ -5,4 +5,19 @@
     <string name="note_indicator">note indicator</string>
     <string name="username">Username</string>
     <string name="details">details</string>
+    <string name="follower">Followers:</string>
+    <string name="follower_value">65</string>
+    <string name="following">Following:</string>
+    <string name="following_value">155</string>
+    <string name="notes">Biography:</string>
+    <string name="imgToolbars">imgToolBars</string>
+    <string name="john_smith">John Smith</string>
+    <string name="content">Content</string>
+    <string name="this_is_me">This is me</string>
+    <string name="blog_www_apple_com">Blog: www.apple.com</string>
+    <string name="company_apple">Company: Apple</string>
+    <string name="name_john_smith">Name: John Smith</string>
+    <string name="top_follower">Top Follower:</string>
+    <string name="profile">Profile:</string>
+    <string name="biography">Biography:</string>
 </resources>

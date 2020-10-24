@@ -5,7 +5,13 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.github.members.directory.data.vo.Members
 
-class MembersPagingAdapter() : PagingDataAdapter<Members, MembersPagingViewHolder>(repositoryComparator) {
+class MembersPagingAdapter(
+        private val itemListener: DetailsOnClickListener
+) : PagingDataAdapter<Members, MembersPagingViewHolder>(repositoryComparator) {
+
+    interface DetailsOnClickListener {
+        fun detailsOnClick(username: String)
+    }
 
     companion object {
         private val repositoryComparator = object : DiffUtil.ItemCallback<Members>() {
@@ -19,7 +25,7 @@ class MembersPagingAdapter() : PagingDataAdapter<Members, MembersPagingViewHolde
 
     override fun onBindViewHolder(holder: MembersPagingViewHolder, position: Int) {
         getItem(position)?.let { user ->
-            holder.bind(user, position)
+            holder.bind(user, position, itemListener)
         }
     }
 
