@@ -31,9 +31,9 @@
         android:label="DiscoverFragment" >
         />
         <argument
-            android:name="movieId"
-            app:argType="integer"
-            android:defaultValue="0" />
+            android:name="username"
+            app:argType="string"
+            android:defaultValue="" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"

@@ -5,4 +5,12 @@
     <string name="note_indicator">note indicator</string>
     <string name="username">Username</string>
     <string name="details">details</string>
+    <string name="follower">Follower:</string>
+    <string name="follower_value">65</string>
+    <string name="following">Following:</string>
+    <string name="following_value">155</string>
+    <string name="notes">Notes:</string>
+    <string name="imgToolbars">imgToolBars</string>
+    <string name="john_smith">John Smith</string>
+    <string name="content">Content</string>
 </resources>

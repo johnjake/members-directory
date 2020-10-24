@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.members.directory.R
 import com.github.members.directory.data.mapper.MembersMapper
+import com.github.members.directory.ext.toast
 import com.github.members.directory.features.users.adapter.MembersPagingAdapter
 import kotlinx.android.synthetic.main.fragment_members.*
 import kotlinx.android.synthetic.main.item_members.*
@@ -25,10 +26,10 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class UsersFragment : Fragment() {
+class UsersFragment : Fragment(), MembersPagingAdapter.DetailsOnClickListener {
     private lateinit var resultLayout: LinearLayoutManager
     private val mapper = MembersMapper.getInstance()
-    private val memberAdapter: MembersPagingAdapter by lazy { MembersPagingAdapter() }
+    private val memberAdapter: MembersPagingAdapter by lazy { MembersPagingAdapter(this) }
     private var searchJob: Job? = null
 
     private val viewModel: MembersViewModel by viewModel()
@@ -142,5 +143,9 @@ class UsersFragment : Fragment() {
             fragment.arguments = args
             return fragment
         }
+    }
+
+    override fun detailsOnClick(username: String) {
+        activity?.toast("this is $username")
     }
 }
