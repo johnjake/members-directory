@@ -11,17 +11,17 @@
         tools:layout="@layout/fragment_members"
         android:label="CinemaFragment" >
         <action
-            android:id="@+id/action_cinema_to_details"
+            android:id="@+id/action_main_to_details"
             app:destination="@id/detailsFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
         <action
-            android:id="@+id/action_cinema_to_search"
+            android:id="@+id/action_main_to_search"
             app:destination="@id/searchFragment"
             app:enterAnim="@anim/anim_fadein"
             app:exitAnim="@anim/anim_fadeout" />
         <action
-            android:id="@+id/action_cinema_to_discoverFragment"
+            android:id="@+id/action_main_to_visitedFragment"
             app:destination="@id/discoverFragment" />
     </fragment>
     <fragment

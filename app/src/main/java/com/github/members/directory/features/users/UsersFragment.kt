@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -17,7 +18,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.members.directory.R
 import com.github.members.directory.data.mapper.MembersMapper
 import com.github.members.directory.ext.toast
+import com.github.members.directory.features.main.MainActivity
 import com.github.members.directory.features.users.adapter.MembersPagingAdapter
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.fragment_members.*
 import kotlinx.android.synthetic.main.item_members.*
 import kotlinx.coroutines.Job
@@ -84,6 +87,11 @@ class UsersFragment : Fragment(), MembersPagingAdapter.DetailsOnClickListener {
         implementSearchMovies()
     }
 
+    override fun onResume() {
+        super.onResume()
+        bottomVisibility()
+    }
+
     private fun initAdapter(view: View) {
         resultLayout = LinearLayoutManager(view.context).apply {
             orientation = LinearLayoutManager.VERTICAL
@@ -131,6 +139,14 @@ class UsersFragment : Fragment(), MembersPagingAdapter.DetailsOnClickListener {
         return pref?.getBoolean(DARK_MODE, false)
     }
 
+    private fun bottomVisibility() {
+        if(MainActivity.onBackPress) {
+            MainActivity.onBackPress = false
+            val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.bottom_nav)
+            bottomNavigationView?.visibility = View.VISIBLE
+        }
+    }
+
     companion object{
         const val DARK_MODE = "isDark"
         const val SHARED_PREF = "myPref"
@@ -146,6 +162,9 @@ class UsersFragment : Fragment(), MembersPagingAdapter.DetailsOnClickListener {
     }
 
     override fun detailsOnClick(username: String) {
-        activity?.toast("this is $username")
+        MainActivity.onDetailsFragment = true
+        MainActivity.onVisitedFragment = false
+        val actionByParam = UsersFragmentDirections.actionMainToDetails(username)
+        findNavController().navigate(actionByParam)
     }
 }

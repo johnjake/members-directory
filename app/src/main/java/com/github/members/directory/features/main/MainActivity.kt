@@ -16,6 +16,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
+    companion object {
+        var onBackPress: Boolean = false
+        var onDetailsFragment: Boolean = false
+        var onVisitedFragment: Boolean = false
+        const val USER_FRAGMENT = "user_fragment"
+        const val SEARCH_FRAGMENT = "search_fragment"
+        const val VISITED_FRAGMENT = "visited_fragment"
+    }
+
     private lateinit var bottomNavView: BottomNavigationView
     private var bundle = Bundle()
 
@@ -65,11 +74,5 @@ class MainActivity : AppCompatActivity() {
         transaction.replace(R.id.nav_host_fragment, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
-    }
-
-    companion object {
-        const val USER_FRAGMENT = "user_fragment"
-        const val SEARCH_FRAGMENT = "search_fragment"
-        const val VISITED_FRAGMENT = "visited_fragment"
     }
 }
