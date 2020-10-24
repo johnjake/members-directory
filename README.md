@@ -1,6 +1,4 @@
-![alt text](https://github.com/johnjake/members-directory/blob/master/app/src/main/res/drawable/ic_github_logo.png)
-
-# Github Name Directory
+# Github Name Directory   ![alt text](https://github.com/johnjake/members-directory/blob/master/app/src/main/res/drawable/ic_github_logo.png)
 
 members-directory app is about users directory listing features are, list of Github users, user profile and user public repositories.
 
