@@ -5,10 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.github.members.directory.R
@@ -19,6 +20,7 @@ import com.github.members.directory.di.providesAvatar
 import com.github.members.directory.ext.toast
 import com.github.members.directory.features.details.adapter.FollowingAdapter
 import com.github.members.directory.features.main.MainActivity
+import com.github.members.directory.features.users.UsersFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.fragment_details.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -49,10 +51,18 @@ class DetailsFragment : Fragment() {
         userProfileObserver()
         followerObserver()
         initAdapter(view)
+
         arguments?.let {
             val arg = DetailsFragmentArgs.fromBundle(it)
             viewModel.getProfileDetails(arg.username)
             viewModel.getFollowerList(arg.username)
+        }
+
+        val isDark = getThemeStatePref() ?: false
+        if (isDark) {
+            detailsLayout.setBackgroundColor(ContextCompat.getColor(view.context, R.color.black))
+        } else {
+            detailsLayout.setBackgroundColor(ContextCompat.getColor(view.context, R.color.white))
         }
     }
 
@@ -78,6 +88,13 @@ class DetailsFragment : Fragment() {
             layoutManager = resultLayout
             adapter = followerAdapter
         }
+    }
+
+    private fun getThemeStatePref(): Boolean? {
+        val pref = context?.getSharedPreferences(UsersFragment.SHARED_PREF,
+                AppCompatActivity.MODE_PRIVATE
+        )
+        return pref?.getBoolean(UsersFragment.DARK_MODE, false)
     }
 
     private fun bottomNavigationViewVisibility() {

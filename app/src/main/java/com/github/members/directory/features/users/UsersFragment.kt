@@ -63,8 +63,6 @@ class UsersFragment : Fragment(), MembersPagingAdapter.DetailsOnClickListener {
             // dark theme is on
             search_input.setBackgroundResource(R.drawable.search_input_dark_style)
             root_layout.setBackgroundColor(ContextCompat.getColor(view.context, R.color.black))
-            textDetails.setTextColor(ContextCompat.getColor(view.context, R.color.black))
-            textUserName.setTextColor(ContextCompat.getColor(view.context, R.color.black))
         } else {
             // light theme is on
             search_input.setBackgroundResource(R.drawable.search_input_style)
@@ -77,11 +75,12 @@ class UsersFragment : Fragment(), MembersPagingAdapter.DetailsOnClickListener {
             if (isDark) {
                 search_input.setBackgroundResource(R.drawable.search_input_dark_style)
                 root_layout.setBackgroundColor(ContextCompat.getColor(view.context, R.color.black))
+                saveThemeStatePref(isDark)
 
             } else {
                 search_input.setBackgroundResource(R.drawable.search_input_style)
                 root_layout.setBackgroundColor(ContextCompat.getColor(view.context, R.color.white))
-
+                saveThemeStatePref(isDark)
             }
         }
         implementSearchMovies()
