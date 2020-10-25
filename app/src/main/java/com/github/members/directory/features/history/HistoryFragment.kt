@@ -19,6 +19,7 @@ import com.github.members.directory.features.history.adapter.SliderPagerAdapter
 import com.github.members.directory.features.users.UsersFragment
 import kotlinx.android.synthetic.main.fragment_history.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 import java.util.*
 
 class HistoryFragment : Fragment() {
@@ -35,7 +36,9 @@ class HistoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         handleObserver()
+        handleSearchObserver()
         viewModel.getGithubTopUsers()
+        viewModel.getUserSearchList()
         val isDark = context?.let { providesSharedPrefTheme(it) } ?: false
         if (isDark) {
             historyLayout.setBackgroundColor(ContextCompat.getColor(view.context, R.color.black))
@@ -58,12 +61,32 @@ class HistoryFragment : Fragment() {
         viewModel.stateProfile.observe(viewLifecycleOwner, Observer { state -> handleData(state) })
     }
 
+    private fun handleSearchObserver() {
+        viewModel.stateSearch.observe(viewLifecycleOwner, Observer { state -> handleDataSearch(state) })
+    }
+
+    private fun handleDataSearch(state: State<List<SearchProfile>>) {
+        when(state) {
+            is State.Data -> handleSearchSuccess(state.data)
+            is State.Error -> handleSearchFailure(state.error)
+            else -> handleProfileNull()
+        }
+    }
+
     private fun handleData(state: State<List<SearchProfile>>) {
         when(state) {
             is State.Data -> handleSuccess(state.data)
             is State.Error -> handleFailure(state.error)
             else -> handleProfileNull()
         }
+    }
+
+    private fun handleSearchSuccess(list: List<SearchProfile>) {
+        Timber.d("$list")
+    }
+
+    private fun handleSearchFailure(error: Throwable) {
+        activity?.toast("Error: ${error.localizedMessage}")
     }
 
     private fun handleSuccess(list: List<SearchProfile>) {

@@ -10,5 +10,5 @@ val repositoryModule = module {
     factory { PagingRepositoryMembers(apiServices = get(), appDatabase = get()) }
     factory { DetailsRepository(apiServices = get(), appDatabase = get()) }
     factory { SearchRepository(apiServices = get(), appDatabase = get(), context = get()) }
-    factory { HistoryRepository(apiServices = get()) }
+    factory { HistoryRepository(apiServices = get(), appDatabase = get()) }
 }
