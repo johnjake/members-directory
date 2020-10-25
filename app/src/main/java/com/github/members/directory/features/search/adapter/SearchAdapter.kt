@@ -10,7 +10,7 @@ class SearchAdapter : PagingDataAdapter<SearchProfile, RecyclerView.ViewHolder>(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = getItem(position)
         if(item != null) {
-            (holder as SearchViewHolder).bind(item)
+            (holder as SearchViewHolder).bind(item, position)
         }
     }
 

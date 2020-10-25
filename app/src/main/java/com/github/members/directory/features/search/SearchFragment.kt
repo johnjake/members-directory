@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -18,9 +20,11 @@ import com.github.members.directory.R
 import com.github.members.directory.features.main.MainActivity
 import com.github.members.directory.features.search.adapter.SearchAdapter
 import com.github.members.directory.features.search.loader.SearchLoaderStateAdapter
+import com.github.members.directory.features.users.UsersFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.layout_search.rvSearch
+import kotlinx.android.synthetic.main.toolbar_search.*
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
@@ -60,6 +64,14 @@ class SearchFragment : Fragment() {
         val query = savedInstanceState?.getString(LAST_SEARCH_QUERY) ?: DEFAULT_QUERY
         implementSearch(query)
         initSearch(query)
+        val isDark = getThemeStatePref() ?: false
+        if (isDark) {
+            searchLayout.setBackgroundColor(ContextCompat.getColor(view.context, R.color.black))
+            toolbarSearch.setBackgroundColor(ContextCompat.getColor(view.context, R.color.black))
+        } else {
+            searchLayout.setBackgroundColor(ContextCompat.getColor(view.context, R.color.white))
+            toolbarSearch.setBackgroundColor(ContextCompat.getColor(view.context, R.color.white))
+        }
     }
 
     override fun onStart() {
@@ -71,6 +83,13 @@ class SearchFragment : Fragment() {
             MainActivity.onSearchFragment = false
             this.findNavController().popBackStack()
         }
+    }
+
+    private fun getThemeStatePref(): Boolean? {
+        val pref = context?.getSharedPreferences(UsersFragment.SHARED_PREF,
+                AppCompatActivity.MODE_PRIVATE
+        )
+        return pref?.getBoolean(UsersFragment.DARK_MODE, false)
     }
 
     private fun initPagingAdapter() {
