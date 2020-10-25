@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -34,10 +35,10 @@ import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import kotlinx.android.synthetic.main.toolbar_search.search_back as backMain
 
-class SearchFragment : Fragment() {
+class SearchFragment : Fragment(), SearchAdapter.OnSearchClickListener {
 
     private lateinit var resultLayout: LinearLayoutManager
-    private val searchAdapter: SearchAdapter by lazy { SearchAdapter() }
+    private val searchAdapter: SearchAdapter by lazy { SearchAdapter(this) }
     private val viewModel: SearchViewModel by inject<SearchViewModel>()
     private var searchJob: Job? = null
 
@@ -172,5 +173,11 @@ class SearchFragment : Fragment() {
             fragment.arguments = args
             return fragment
         }
+    }
+
+    override fun onItemClickListener(username: String) {
+        MainActivity.onSearchFragment = true
+        val argParam = SearchFragmentDirections.actionSearchFragmentToDetailsFragment(username)
+        view?.findNavController()?.navigate(argParam)
     }
 }
