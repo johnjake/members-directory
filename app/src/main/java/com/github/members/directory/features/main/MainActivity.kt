@@ -9,9 +9,8 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.fragment.NavHostFragment
 import androidx.paging.ExperimentalPagingApi
 import com.github.members.directory.R
-import com.github.members.directory.features.repository.RepositoryFragment
+import com.github.members.directory.features.history.HistoryFragment
 import com.github.members.directory.features.users.UsersFragment
-import com.github.members.directory.features.search.SearchFragment
 import com.github.members.directory.features.visited.VisitedFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -57,7 +56,7 @@ class MainActivity : AppCompatActivity() {
                         return true
                     }
                     R.id.destination_discover -> {
-                        val instanceDiscover = RepositoryFragment.newInstance(REPOSITORY_FRAGMENT)
+                        val instanceDiscover = HistoryFragment.newInstance(REPOSITORY_FRAGMENT)
                         instanceDiscover.arguments = bundle
                         openFragment(instanceDiscover)
                         return true

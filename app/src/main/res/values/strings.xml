@@ -22,4 +22,5 @@
     <string name="biography">Biography:</string>
     <string name="label_error">Something went wrong, please try again</string>
     <string name="clear">CLEAR</string>
+    <string name="user">User</string>
 </resources>
