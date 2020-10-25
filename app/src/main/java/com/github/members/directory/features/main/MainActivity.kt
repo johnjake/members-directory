@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.fragment.NavHostFragment
 import androidx.paging.ExperimentalPagingApi
 import com.github.members.directory.R
+import com.github.members.directory.features.repository.RepositoryFragment
 import com.github.members.directory.features.users.UsersFragment
 import com.github.members.directory.features.search.SearchFragment
 import com.github.members.directory.features.visited.VisitedFragment
@@ -20,8 +21,10 @@ class MainActivity : AppCompatActivity() {
         var onBackPress: Boolean = false
         var onDetailsFragment: Boolean = false
         var onVisitedFragment: Boolean = false
+        var onSearchFragment: Boolean = false
+
         const val USER_FRAGMENT = "user_fragment"
-        const val SEARCH_FRAGMENT = "search_fragment"
+        const val REPOSITORY_FRAGMENT = "repository_fragment"
         const val VISITED_FRAGMENT = "visited_fragment"
     }
 
@@ -54,7 +57,7 @@ class MainActivity : AppCompatActivity() {
                         return true
                     }
                     R.id.destination_discover -> {
-                        val instanceDiscover = SearchFragment.newInstance(SEARCH_FRAGMENT)
+                        val instanceDiscover = RepositoryFragment.newInstance(REPOSITORY_FRAGMENT)
                         instanceDiscover.arguments = bundle
                         openFragment(instanceDiscover)
                         return true
