@@ -55,7 +55,7 @@ class DetailsFragment : Fragment() {
         arguments?.let {
             val arg = DetailsFragmentArgs.fromBundle(it)
             viewModel.getProfileDetails(arg.username)
-            viewModel.getFollowerList(arg.username)
+           // viewModel.getFollowerList(arg.username)
         }
 
         val isDark = getThemeStatePref() ?: false

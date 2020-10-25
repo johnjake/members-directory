@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadState
@@ -21,6 +22,7 @@ import com.github.members.directory.ext.toast
 import com.github.members.directory.features.main.MainActivity
 import com.github.members.directory.features.users.adapter.MembersPagingAdapter
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.jakewharton.rxbinding3.view.focusChanges
 import kotlinx.android.synthetic.main.fragment_members.*
 import kotlinx.android.synthetic.main.item_members.*
 import kotlinx.coroutines.Job
@@ -84,6 +86,11 @@ class UsersFragment : Fragment(), MembersPagingAdapter.DetailsOnClickListener {
             }
         }
         implementSearchMovies()
+        search_input.setOnFocusChangeListener { v, hasFocus ->
+            if(hasFocus) {
+                v.findNavController().navigate(R.id.action_main_to_search)
+            }
+        }
     }
 
     override fun onResume() {
@@ -163,6 +170,7 @@ class UsersFragment : Fragment(), MembersPagingAdapter.DetailsOnClickListener {
     override fun detailsOnClick(username: String) {
         MainActivity.onDetailsFragment = true
         MainActivity.onVisitedFragment = false
+        MainActivity.onSearchFragment = false
         val actionByParam = UsersFragmentDirections.actionMainToDetails(username)
         findNavController().navigate(actionByParam)
     }

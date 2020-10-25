@@ -37,12 +37,12 @@
         android:contentDescription="@string/toDark_mood" />
 
     <EditText
+        android:id="@+id/search_input"
         android:drawablePadding="@dimen/pixels_8"
         android:drawableStart="@drawable/ic_search_gray_24dp"
         android:textColor="@color/content_text_color"
         android:hint="@string/search"
         android:background="@drawable/search_input_style"
-        android:id="@+id/search_input"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/pixels_24"

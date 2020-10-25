@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/itemSearchLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/pixel_1"
+    android:foreground="?android:selectableItemBackground"
+    tools:ignore="UnusedAttribute">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/leftGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="16dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/rightGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="16dp" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/searchAvatar"
+        android:layout_width="@dimen/pixels_66"
+        android:layout_height="@dimen/pixels_66"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:elevation="2dp"
+        android:padding="4dp"
+        android:background="@drawable/stroke_avatar_gray"
+        app:layout_constraintStart_toStartOf="@+id/leftGuideline"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/textUserName"
+        android:hint="@string/username"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:textStyle="bold"
+        android:textColor="@color/pinkOne"
+        android:textSize="16sp"
+        android:fontFamily="@font/inter_regular"
+        app:layout_constraintBottom_toTopOf="@+id/textDetails"
+        app:layout_constraintEnd_toStartOf="@+id/noteIcon"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/searchAvatar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        />
+
+    <TextView
+        android:id="@+id/textDetails"
+        android:hint="@string/details"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/pixels_8"
+        android:layout_marginEnd="@dimen/pixels_8"
+        android:layout_marginTop="@dimen/pixels_4"
+        android:textSize="14sp"
+        android:textColor="@color/dim_gray_text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/noteIcon"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/searchAvatar"
+        app:layout_constraintTop_toBottomOf="@+id/textUserName" />
+
+    <ImageView
+        android:id="@+id/noteIcon"
+        android:layout_width="@dimen/pixels_16"
+        android:layout_height="@dimen/pixels_16"
+        android:src="@drawable/ic_note_icon"
+        android:layout_marginEnd="@dimen/pixels_10"
+        android:layout_marginBottom="@dimen/pixels_4"
+        android:contentDescription="@string/note_indicator"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/rightGuideline"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

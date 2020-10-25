@@ -23,6 +23,12 @@
         <action
             android:id="@+id/action_main_to_visitedFragment"
             app:destination="@id/discoverFragment" />
+        <action
+            android:id="@+id/action_main_to_historyFragment"
+            app:destination="@+id/historyFragment"
+            />
+
+
     </fragment>
     <fragment
         android:id="@+id/detailsFragment"
@@ -50,6 +56,13 @@
         android:name="com.github.members.directory.features.visited.VisitedFragment"
         android:label="fragment_discover"
         tools:layout="@layout/fragment_visited" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="com.github.members.directory.features.repository.RepositoryFragment"
+        android:label="fragment_history"
+        tools:layout="@layout/fragment_repository" >
     </fragment>
 
 
