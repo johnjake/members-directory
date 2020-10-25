@@ -26,4 +26,5 @@
     <string name="top_members">Top Members</string>
     <string name="internet_problem">Internet Problem</string>
     <string name="would_you_like_to_use_offline">Would you like to use offline?</string>
+    <string name="search_result">Search Result</string>
 </resources>

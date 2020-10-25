@@ -5,27 +5,27 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
 import com.github.members.directory.R
 import com.github.members.directory.data.State
 import com.github.members.directory.data.vo.SearchProfile
 import com.github.members.directory.di.providesSharedPrefTheme
 import com.github.members.directory.ext.toast
+import com.github.members.directory.features.history.adapter.HistoryAdapter
 import com.github.members.directory.features.history.adapter.SliderPagerAdapter
-import com.github.members.directory.features.users.UsersFragment
 import kotlinx.android.synthetic.main.fragment_history.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 import java.util.*
 
 class HistoryFragment : Fragment() {
-
+    private lateinit var resultLayout: LinearLayoutManager
     private val viewModel: HistoryViewModel by viewModel()
     private val sliderAdapter by lazy { context?.let { SliderPagerAdapter(it) } }
+    private val searchAdapter: HistoryAdapter by lazy { HistoryAdapter() }
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -47,6 +47,7 @@ class HistoryFragment : Fragment() {
             historyLayout.setBackgroundColor(ContextCompat.getColor(view.context, R.color.white))
             indicator.setBackgroundColor(ContextCompat.getColor(view.context, R.color.white))
         }
+        initAdapter(view)
     }
 
     private fun initSlider(list: List<SearchProfile>) {
@@ -55,6 +56,16 @@ class HistoryFragment : Fragment() {
         val timer = Timer()
         timer.scheduleAtFixedRate(activity?.let { SliderTimer(it, slider_pager, list) }, 4000, 6000)
         indicator.setupWithViewPager(slider_pager, true)
+    }
+
+    private fun initAdapter(view: View) {
+        resultLayout = LinearLayoutManager(view.context).apply {
+            orientation = LinearLayoutManager.HORIZONTAL
+        }
+        listView.apply {
+            layoutManager = resultLayout
+            adapter = searchAdapter
+        }
     }
 
     private fun handleObserver() {
@@ -82,7 +93,9 @@ class HistoryFragment : Fragment() {
     }
 
     private fun handleSearchSuccess(list: List<SearchProfile>) {
-        Timber.d("$list")
+        if(list.isNotEmpty()) {
+            searchAdapter.dataSource = list
+        }
     }
 
     private fun handleSearchFailure(error: Throwable) {
