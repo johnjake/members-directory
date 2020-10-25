@@ -19,13 +19,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.members.directory.R
 import com.github.members.directory.data.mapper.MembersMapper
 import com.github.members.directory.di.providesSharedPrefTheme
-import com.github.members.directory.ext.toast
 import com.github.members.directory.features.main.MainActivity
 import com.github.members.directory.features.users.adapter.MembersPagingAdapter
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.jakewharton.rxbinding3.view.focusChanges
 import kotlinx.android.synthetic.main.fragment_members.*
-import kotlinx.android.synthetic.main.item_members.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged

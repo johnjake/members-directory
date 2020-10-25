@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.github.members.baseplate_persistence.AppDatabase
 import com.github.members.baseplate_persistence.dao.MembersDao
 import com.github.members.baseplate_persistence.dao.RemoteKeysDao
+import com.github.members.baseplate_persistence.dao.SearchDao
 import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 
@@ -23,7 +24,12 @@ val databaseModule = module {
         return database.remoteKeysDao()
     }
 
+    fun providesSearchDao(database: AppDatabase): SearchDao {
+        return database.searchDao()
+    }
+
     single { provideDatabase(androidApplication()) }
     single { providesMembersDao(get()) }
     single { providesRemoteDao(get()) }
+    single { providesSearchDao(get()) }
 }

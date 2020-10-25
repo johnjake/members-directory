@@ -29,6 +29,7 @@ class SplashActivity : AppCompatActivity() {
                scope.launch {
                    delay(5000)
                    launchActivity()
+                   saveInternetStatePref(false)
                }
            }
            false -> verifyConnection()
@@ -47,6 +48,7 @@ class SplashActivity : AppCompatActivity() {
                 isNegativeBtnHide = false)
         alertDialog.setPositive("YES", object : ListenerCallBack {
             override fun onClick(dialog: VelloAlertDialog) {
+                saveInternetStatePref(true)
                 dialog.dismiss()
             }
         })
@@ -67,5 +69,19 @@ class SplashActivity : AppCompatActivity() {
         startActivity(Intent(this, MainActivity::class.java).apply {
             putExtra("INTERNET", "1")
         })
+    }
+
+    private fun saveInternetStatePref(storage: Boolean) {
+        val pref = this.getSharedPreferences(SHARED_PREF,
+                AppCompatActivity.MODE_PRIVATE
+        )
+        val editor = pref?.edit()
+        editor?.putBoolean(PERSIST_LOCAL, storage)
+        editor?.apply()
+    }
+
+    companion object {
+        const val SHARED_PREF = "myData"
+        const val PERSIST_LOCAL = "members.directory.room"
     }
 }
