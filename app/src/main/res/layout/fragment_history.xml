@@ -6,11 +6,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="@dimen/pixels_8"
+        android:text="@string/top_members"
+        android:textColor="@color/dirtyWhite"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@+id/slider_pager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/slider_pager"
         android:layout_marginStart="@dimen/pixels_8"
         android:layout_marginEnd="@dimen/pixels_8"
-        android:layout_marginTop="@dimen/pixels_8"
+        android:layout_marginTop="@dimen/pixels_54"
         android:layout_marginBottom="@dimen/pixels_8"
         android:layout_width="0dp"
         android:layout_height="275dp"

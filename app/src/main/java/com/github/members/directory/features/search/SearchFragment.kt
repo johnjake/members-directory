@@ -18,6 +18,7 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.members.directory.R
+import com.github.members.directory.di.providesSharedPrefTheme
 import com.github.members.directory.features.main.MainActivity
 import com.github.members.directory.features.search.adapter.SearchAdapter
 import com.github.members.directory.features.search.loader.SearchLoaderStateAdapter
@@ -65,7 +66,7 @@ class SearchFragment : Fragment(), SearchAdapter.OnSearchClickListener {
         val query = savedInstanceState?.getString(LAST_SEARCH_QUERY) ?: DEFAULT_QUERY
         implementSearch(query)
         initSearch(query)
-        val isDark = getThemeStatePref() ?: false
+        val isDark = context?.let { providesSharedPrefTheme(it) } ?: false
         if (isDark) {
             searchLayout.setBackgroundColor(ContextCompat.getColor(view.context, R.color.black))
             toolbarSearch.setBackgroundColor(ContextCompat.getColor(view.context, R.color.black))
@@ -84,13 +85,6 @@ class SearchFragment : Fragment(), SearchAdapter.OnSearchClickListener {
             MainActivity.onSearchFragment = false
             this.findNavController().popBackStack()
         }
-    }
-
-    private fun getThemeStatePref(): Boolean? {
-        val pref = context?.getSharedPreferences(UsersFragment.SHARED_PREF,
-                AppCompatActivity.MODE_PRIVATE
-        )
-        return pref?.getBoolean(UsersFragment.DARK_MODE, false)
     }
 
     private fun initPagingAdapter() {

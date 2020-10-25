@@ -62,7 +62,7 @@
         android:id="@+id/historyFragment"
         android:name="com.github.members.directory.features.history.HistoryFragment"
         android:label="fragment_history"
-        tools:layout="@layout/fragment_repository" >
+        tools:layout="@layout/fragment_history" >
     </fragment>
 
 

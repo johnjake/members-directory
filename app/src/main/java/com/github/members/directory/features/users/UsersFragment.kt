@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.members.directory.R
 import com.github.members.directory.data.mapper.MembersMapper
+import com.github.members.directory.di.providesSharedPrefTheme
 import com.github.members.directory.ext.toast
 import com.github.members.directory.features.main.MainActivity
 import com.github.members.directory.features.users.adapter.MembersPagingAdapter
@@ -60,7 +61,7 @@ class UsersFragment : Fragment(), MembersPagingAdapter.DetailsOnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAdapter(view)
-        var isDark = getThemeStatePref() ?: false
+        var isDark = context?.let { providesSharedPrefTheme(it) } ?: false
         if (isDark) {
             // dark theme is on
             search_input.setBackgroundResource(R.drawable.search_input_dark_style)
@@ -136,13 +137,6 @@ class UsersFragment : Fragment(), MembersPagingAdapter.DetailsOnClickListener {
         val editor = pref?.edit()
         editor?.putBoolean(DARK_MODE, isDark)
         editor?.apply()
-    }
-
-    private fun getThemeStatePref(): Boolean? {
-        val pref = context?.getSharedPreferences(SHARED_PREF,
-            AppCompatActivity.MODE_PRIVATE
-        )
-        return pref?.getBoolean(DARK_MODE, false)
     }
 
     private fun bottomVisibility() {

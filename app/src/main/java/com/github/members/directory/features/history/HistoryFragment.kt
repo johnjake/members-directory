@@ -13,10 +13,11 @@ import androidx.viewpager.widget.ViewPager
 import com.github.members.directory.R
 import com.github.members.directory.data.State
 import com.github.members.directory.data.vo.SearchProfile
+import com.github.members.directory.di.providesSharedPrefTheme
 import com.github.members.directory.ext.toast
 import com.github.members.directory.features.history.adapter.SliderPagerAdapter
 import com.github.members.directory.features.users.UsersFragment
-import kotlinx.android.synthetic.main.fragment_repository.*
+import kotlinx.android.synthetic.main.fragment_history.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
@@ -29,13 +30,13 @@ class HistoryFragment : Fragment() {
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_repository, container, false)
+    ): View? = inflater.inflate(R.layout.fragment_history, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         handleObserver()
         viewModel.getGithubTopUsers()
-        val isDark = getThemeStatePref() ?: false
+        val isDark = context?.let { providesSharedPrefTheme(it) } ?: false
         if (isDark) {
             historyLayout.setBackgroundColor(ContextCompat.getColor(view.context, R.color.black))
             indicator.setBackgroundColor(ContextCompat.getColor(view.context, R.color.black))
@@ -66,7 +67,7 @@ class HistoryFragment : Fragment() {
     }
 
     private fun handleSuccess(list: List<SearchProfile>) {
-        initSlider(list.take(5))
+        initSlider(list.take(8))
     }
 
     private fun handleFailure(error: Throwable) {
@@ -86,13 +87,6 @@ class HistoryFragment : Fragment() {
             fragment.arguments = args
             return fragment
         }
-    }
-
-    private fun getThemeStatePref(): Boolean? {
-        val pref = context?.getSharedPreferences(UsersFragment.SHARED_PREF,
-                AppCompatActivity.MODE_PRIVATE
-        )
-        return pref?.getBoolean(UsersFragment.DARK_MODE, false)
     }
 
     internal class SliderTimer(private val activity: Activity,
