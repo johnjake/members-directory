@@ -49,6 +49,7 @@ class SplashActivity : AppCompatActivity() {
         alertDialog.setPositive("YES", object : ListenerCallBack {
             override fun onClick(dialog: VelloAlertDialog) {
                 saveInternetStatePref(true)
+                launchActivity()
                 dialog.dismiss()
             }
         })

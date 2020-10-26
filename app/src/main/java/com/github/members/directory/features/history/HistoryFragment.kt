@@ -13,6 +13,7 @@ import androidx.viewpager.widget.ViewPager
 import com.github.members.directory.R
 import com.github.members.directory.data.State
 import com.github.members.directory.data.vo.SearchProfile
+import com.github.members.directory.di.providesSharedOnline
 import com.github.members.directory.di.providesSharedPrefTheme
 import com.github.members.directory.ext.toast
 import com.github.members.directory.features.history.adapter.HistoryAdapter
@@ -37,7 +38,10 @@ class HistoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         handleObserver()
         handleSearchObserver()
-        viewModel.getGithubTopUsers()
+        val isLocal: Boolean = providesSharedOnline(view.context) ?: false
+        if(!isLocal) {
+            viewModel.getGithubTopUsers()
+        }
         viewModel.getUserSearchList()
         val isDark = context?.let { providesSharedPrefTheme(it) } ?: false
         if (isDark) {
@@ -103,7 +107,9 @@ class HistoryFragment : Fragment() {
     }
 
     private fun handleSuccess(list: List<SearchProfile>) {
-        initSlider(list.take(8))
+        if(list.isNotEmpty()) {
+            initSlider(list.take(8))
+        }
     }
 
     private fun handleFailure(error: Throwable) {
