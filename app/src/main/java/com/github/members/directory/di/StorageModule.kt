@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
+import com.github.members.directory.features.splash.SplashActivity
 import com.github.members.directory.features.users.UsersFragment
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
@@ -14,6 +15,7 @@ val storageModule = module(override = true) {
     single { providesSharedPreferences(get()) }
     single { providesSharedPrefTheme(get()) }
     single { providesSharedOnline(get()) }
+    single { providesSaveInternetStatePref(context = get(), storage = get()) }
 }
 
 fun providesSharedPreferences(application: Application): SharedPreferences {
@@ -34,4 +36,13 @@ fun providesSharedOnline(context: Context): Boolean? {
             AppCompatActivity.MODE_PRIVATE
     )
     return pref?.getBoolean(localSharedKey, false)
+}
+
+fun providesSaveInternetStatePref(context: Context, storage: Boolean) {
+    val pref = context.getSharedPreferences(SplashActivity.SHARED_PREF,
+            AppCompatActivity.MODE_PRIVATE
+    )
+    val editor = pref?.edit()
+    editor?.putBoolean(SplashActivity.PERSIST_LOCAL, storage)
+    editor?.apply()
 }

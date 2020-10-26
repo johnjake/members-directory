@@ -9,7 +9,7 @@ import org.koin.dsl.module
 
 val viewModelModule = module {
     viewModel { MembersViewModel(integrator = get()) }
-    viewModel { DetailsViewModel(integrator = get()) }
+    viewModel { DetailsViewModel(integrator = get(), context = get()) }
     viewModel { SearchViewModel(integrator = get()) }
     viewModel { HistoryViewModel(integrator = get()) }
 }

@@ -17,7 +17,10 @@ import com.github.members.directory.data.State
 import com.github.members.directory.data.vo.Members
 import com.github.members.directory.data.vo.Profiles
 import com.github.members.directory.di.providesAvatar
+import com.github.members.directory.di.providesSaveInternetStatePref
+import com.github.members.directory.di.providesSharedOnline
 import com.github.members.directory.di.providesSharedPrefTheme
+import com.github.members.directory.ext.isOnline
 import com.github.members.directory.ext.toast
 import com.github.members.directory.features.details.adapter.FollowingAdapter
 import com.github.members.directory.features.main.MainActivity
@@ -25,6 +28,7 @@ import com.github.members.directory.features.users.UsersFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.fragment_details.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 import kotlinx.android.synthetic.main.toolbar_profile_details.toolbar_back as back
 import kotlinx.android.synthetic.main.toolbar_profile_details.userProfileName as profileName
 import kotlinx.android.synthetic.main.fragment_details.txtFollowerNumber as follower
@@ -52,11 +56,14 @@ class DetailsFragment : Fragment() {
         userProfileObserver()
         followerObserver()
         initAdapter(view)
-
+        val isLocal = activity?.isOnline(view.context) ?: false
         arguments?.let {
             val arg = DetailsFragmentArgs.fromBundle(it)
+            if(isLocal) {
+                viewModel.getFollowerList(arg.username)
+                providesSaveInternetStatePref(view.context, false)
+            }
             viewModel.getProfileDetails(arg.username)
-           // viewModel.getFollowerList(arg.username)
         }
 
         val isDark = context?.let { providesSharedPrefTheme(it) } ?: false
@@ -104,9 +111,12 @@ class DetailsFragment : Fragment() {
         viewModel.stateList.observe(viewLifecycleOwner, Observer { state -> handleDataFollowers(state) })
     }
 
-    private fun handleDataProfile(state: State<Profiles>) {
+    private fun handleDataProfile(state: State<Profiles>?) {
         when(state) {
-            is State.Data -> handleProfileSuccess(state.data)
+            is State.Data -> {
+                val data = state.data ?: null
+                handleProfileSuccess(data)
+            }
             is State.Error -> handleProfileFailed(state.error)
             else -> handleProfileNull()
         }
@@ -121,15 +131,15 @@ class DetailsFragment : Fragment() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun handleProfileSuccess(profile: Profiles) {
-        profileName.text = profile.login
-        follower.text = profile.followers.toString()
-        following.text = profile.following.toString()
-        biography.text = profile.bio
-        company.text = "Company: ${profile.company}"
-        userName.text = "Name: ${profile.name}"
-        githubUrl.text = "Blog: ${profile.blog}"
-        imgProfile.load(imgUrl + profile.id)
+    private fun handleProfileSuccess(profile: Profiles?) {
+        profileName.text = profile?.login
+        follower.text = profile?.followers.toString()
+        following.text = profile?.following.toString()
+        biography.text = profile?.bio
+        company.text = "Company: ${profile?.company}"
+        userName.text = "Name: ${profile?.name}"
+        githubUrl.text = "Blog: ${profile?.blog}"
+        imgProfile.load(imgUrl + profile?.id)
     }
 
     private fun handleProfileFailed(error: Throwable) {

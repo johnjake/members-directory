@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/layoutShimmer"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/searchLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/pixel_1"
-    android:background="@color/black"
     tools:ignore="UnusedAttribute">
 
     <androidx.constraintlayout.widget.Guideline
@@ -25,11 +24,12 @@
 
     <FrameLayout
         android:id="@+id/avatar_wrapper"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:elevation="15dp"
+        android:layout_width="@dimen/pixels_66"
+        android:layout_height="@dimen/pixels_66"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:elevation="2dp"
         android:padding="4dp"
         android:background="@drawable/bg_circle_default"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -46,25 +46,42 @@
     </FrameLayout>
 
     <TextView
-        android:id="@+id/fullname"
+        android:id="@+id/textUserName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:textColor="@color/white"
+        android:textStyle="bold"
         android:textSize="16sp"
-        android:fontFamily="@font/inter_regular"
         android:background="@color/color_shimmer"
-        app:layout_constraintBottom_toTopOf="@+id/elapsedTime"
-        app:layout_constraintEnd_toStartOf="@+id/playIcon"
+        android:textColor="@color/color_shimmer"
+        android:fontFamily="@font/inter_regular"
+        app:layout_constraintBottom_toTopOf="@+id/textDetails"
+        app:layout_constraintEnd_toStartOf="@+id/noteIcon"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/avatar_wrapper"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
         />
 
+    <TextView
+        android:id="@+id/textDetails"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/pixels_8"
+        android:layout_marginEnd="@dimen/pixels_8"
+        android:layout_marginTop="@dimen/pixels_4"
+        android:textSize="14sp"
+        android:background="@color/color_shimmer"
+        android:textColor="@color/color_shimmer"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/noteIcon"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/avatar_wrapper"
+        app:layout_constraintTop_toBottomOf="@+id/textUserName" />
+
     <ImageView
-        android:id="@+id/playIcon"
+        android:id="@+id/noteIcon"
         android:layout_width="@dimen/pixels_16"
         android:layout_height="@dimen/pixels_16"
         android:src="@drawable/ic_note_icon"
@@ -74,20 +91,4 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/rightGuideline"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/elapsedTime"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="@dimen/pixels_4"
-        android:textSize="16sp"
-        android:textColor="@color/davys_gray"
-        android:background="@color/color_shimmer"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/playIcon"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/avatar_wrapper"
-        app:layout_constraintTop_toBottomOf="@+id/fullname" />
 </androidx.constraintlayout.widget.ConstraintLayout>

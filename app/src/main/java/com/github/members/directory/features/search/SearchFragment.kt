@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -19,29 +18,33 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.members.directory.R
 import com.github.members.directory.di.providesSharedPrefTheme
+import com.github.members.directory.ext.isOnline
+import com.github.members.directory.features.Shimmer
 import com.github.members.directory.features.main.MainActivity
 import com.github.members.directory.features.search.adapter.SearchAdapter
 import com.github.members.directory.features.search.loader.SearchLoaderStateAdapter
-import com.github.members.directory.features.users.UsersFragment
+import com.github.members.directory.features.search.shimmering.SearchShimmerAdapter
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.android.synthetic.main.fragment_members.*
 import kotlinx.android.synthetic.main.fragment_search.*
+import kotlinx.android.synthetic.main.fragment_search.search_input
 import kotlinx.android.synthetic.main.layout_search.rvSearch
 import kotlinx.android.synthetic.main.toolbar_search.*
-import kotlinx.coroutines.InternalCoroutinesApi
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import kotlinx.android.synthetic.main.toolbar_search.search_back as backMain
 
 class SearchFragment : Fragment(), SearchAdapter.OnSearchClickListener {
 
     private lateinit var resultLayout: LinearLayoutManager
+    private val shimmerAdapter: SearchShimmerAdapter by lazy { SearchShimmerAdapter() }
     private val searchAdapter: SearchAdapter by lazy { SearchAdapter(this) }
     private val viewModel: SearchViewModel by inject<SearchViewModel>()
     private var searchJob: Job? = null
+    private var isOnline: Boolean = false
 
     private fun implementSearch(query: String) {
         searchJob?.cancel()
@@ -63,6 +66,7 @@ class SearchFragment : Fragment(), SearchAdapter.OnSearchClickListener {
         super.onViewCreated(view, savedInstanceState)
         bottomNavigationViewVisibility()
         initPagingAdapter()
+        initShimmerAdapter(view)
         val query = savedInstanceState?.getString(LAST_SEARCH_QUERY) ?: DEFAULT_QUERY
         implementSearch(query)
         initSearch(query)
@@ -73,6 +77,9 @@ class SearchFragment : Fragment(), SearchAdapter.OnSearchClickListener {
         } else {
             searchLayout.setBackgroundColor(ContextCompat.getColor(view.context, R.color.white))
             toolbarSearch.setBackgroundColor(ContextCompat.getColor(view.context, R.color.white))
+        }
+        retry_button.setOnClickListener {
+            searchAdapter.retry()
         }
     }
 
@@ -85,6 +92,12 @@ class SearchFragment : Fragment(), SearchAdapter.OnSearchClickListener {
             MainActivity.onSearchFragment = false
             this.findNavController().popBackStack()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        isOnline = context?.let { activity?.isOnline(it) } ?: false
+        shimmeringEffects()
     }
 
     private fun initPagingAdapter() {
@@ -102,6 +115,7 @@ class SearchFragment : Fragment(), SearchAdapter.OnSearchClickListener {
         }
         searchAdapter.addLoadStateListener { loadState ->
             searchProgress.isVisible = loadState.source.refresh is LoadState.Loading
+            if (isOnline) { retry_button.isVisible = loadState.source.refresh is LoadState.Error }
             // Toast on any error, regardless of whether it came from RemoteMediator or PagingSource
             val errorState = loadState.source.append as? LoadState.Error
                     ?: loadState.source.prepend as? LoadState.Error
@@ -147,6 +161,35 @@ class SearchFragment : Fragment(), SearchAdapter.OnSearchClickListener {
         search_input.text.trim().let {
             if (it.isNotEmpty()) {
                 implementSearch(it.toString())
+            }
+        }
+    }
+
+    private fun initShimmerAdapter(view: View) {
+        val data = Shimmer.getInstance()
+        val shimLayout = LinearLayoutManager(view.context).apply {
+            orientation = LinearLayoutManager.VERTICAL
+        }
+        rvShimSearch.apply {
+            layoutManager = shimLayout
+            adapter = shimmerAdapter
+        }
+        shimmerAdapter.dataSource = data.getShimmerList()
+    }
+
+    @Suppress("DeferredResultUnused")
+    private fun shimmeringEffects() {
+        if (containerSearch != null) {
+            searchProgress.isVisible = false
+            containerSearch.isVisible = true
+            rvSearch.isVisible = false
+            containerSearch.startLayoutAnimation()
+            val shimmerEffect = CoroutineScope(Dispatchers.Main)
+            shimmerEffect.async {
+                delay(1000)
+                containerSearch.stopShimmer()
+                rvSearch.isVisible = true
+                containerSearch.isVisible = false
             }
         }
     }

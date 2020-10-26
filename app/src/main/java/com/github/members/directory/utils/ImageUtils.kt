@@ -8,7 +8,6 @@ import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import androidx.annotation.NonNull
 import coil.ImageLoader
-import coil.request.GetRequest
 import coil.request.ImageRequest
 import coil.request.SuccessResult
 import kotlinx.coroutines.*
@@ -16,8 +15,6 @@ import timber.log.Timber
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
-import java.net.URL
-
 
 class ImageUtils {
     companion object {
