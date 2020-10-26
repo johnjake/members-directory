@@ -1,6 +1,5 @@
 package com.github.members.directory.features.users
 
-import android.content.Context
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -20,26 +19,27 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.members.directory.R
 import com.github.members.directory.data.mapper.MembersMapper
-import com.github.members.directory.di.providesSharedOnline
 import com.github.members.directory.di.providesSharedPrefTheme
+import com.github.members.directory.ext.isOnline
+import com.github.members.directory.features.Shimmer
 import com.github.members.directory.features.main.MainActivity
 import com.github.members.directory.features.users.adapter.MembersPagingAdapter
+import com.github.members.directory.features.users.shimmering.UserShimmerAdapter
 import com.github.members.directory.utils.alertDialog.ListenerCallBack
 import com.github.members.directory.utils.alertDialog.VelloAlertDialog
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.fragment_members.*
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class UsersFragment : Fragment(), MembersPagingAdapter.DetailsOnClickListener {
     private lateinit var resultLayout: LinearLayoutManager
     private val mapper = MembersMapper.getInstance()
     private val memberAdapter: MembersPagingAdapter by lazy { MembersPagingAdapter(this) }
+    private val shimmerAdapter: UserShimmerAdapter by lazy { UserShimmerAdapter() }
     private var searchJob: Job? = null
-
     private val viewModel: MembersViewModel by viewModel()
 
     @ExperimentalPagingApi
@@ -63,16 +63,19 @@ class UsersFragment : Fragment(), MembersPagingAdapter.DetailsOnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAdapter(view)
-        val isLocal: Boolean = providesSharedOnline(view.context) ?: false
+        initShimmerAdapter(view)
+        val isLocal: Boolean = activity?.isOnline(view.context) ?: false
         var isDark = context?.let { providesSharedPrefTheme(it) } ?: false
         if (isDark) {
             // dark theme is on
             search_input.setBackgroundResource(R.drawable.search_input_dark_style)
             root_layout.setBackgroundColor(ContextCompat.getColor(view.context, R.color.black))
+
         } else {
             // light theme is on
             search_input.setBackgroundResource(R.drawable.search_input_style)
             root_layout.setBackgroundColor(ContextCompat.getColor(view.context, R.color.white))
+
         }
 
         fab_switcher.setOnClickListener {
@@ -92,9 +95,9 @@ class UsersFragment : Fragment(), MembersPagingAdapter.DetailsOnClickListener {
         search_input.setOnFocusChangeListener { v, hasFocus ->
             if(hasFocus) {
                 if(isLocal) {
-                    offLine(v.context)
-                }else {
                     v.findNavController().navigate(R.id.action_main_to_search)
+                }else {
+                    offLine(v)
                 }
             }
         }
@@ -103,24 +106,38 @@ class UsersFragment : Fragment(), MembersPagingAdapter.DetailsOnClickListener {
     override fun onResume() {
         super.onResume()
         bottomVisibility()
+        shimmeringEffects()
     }
 
-    private fun offLine(context: Context) {
+    private fun offLine(view: View) {
         val alertDialog = VelloAlertDialog()
         alertDialog.alertInitialize(
-                context,
+                view.context,
                 "Ops! Offline",
-                "Online search is unavailable in offline",
+                "You are currently offline would you like to continue?",
                 Typeface.SANS_SERIF,
                 Typeface.DEFAULT_BOLD,
                 isCancelable = true,
                 isNegativeBtnHide = true)
-        alertDialog.setPositive("OK", object : ListenerCallBack {
+        alertDialog.setPositive("YES", object : ListenerCallBack {
             override fun onClick(dialog: VelloAlertDialog) {
+                view.findNavController().navigate(R.id.action_main_to_search)
                 dialog.dismiss()
             }
         })
         alertDialog.show()
+    }
+
+    private fun initShimmerAdapter(view: View) {
+        val data = Shimmer.getInstance()
+        val shimLayout = LinearLayoutManager(view.context).apply {
+            orientation = LinearLayoutManager.VERTICAL
+        }
+        rvShimUser.apply {
+            layoutManager = shimLayout
+            adapter = shimmerAdapter
+        }
+        shimmerAdapter.dataSource = data.getShimmerList()
     }
 
     private fun initAdapter(view: View) {
@@ -137,7 +154,7 @@ class UsersFragment : Fragment(), MembersPagingAdapter.DetailsOnClickListener {
         }
 
         memberAdapter.addLoadStateListener { loadState ->
-            val resultLoading: Boolean? = loadState.source.refresh is LoadState.Loading
+            val resultLoading: Boolean = loadState.source.refresh is LoadState.Loading
             if (resultProgress != null) resultProgress.isVisible = resultLoading ?: false
             // Toast on any error, regardless of whether it came from RemoteMediator or PagingSource
             val errorState = loadState.source.append as? LoadState.Error
@@ -150,6 +167,23 @@ class UsersFragment : Fragment(), MembersPagingAdapter.DetailsOnClickListener {
                     "\uD83D\uDE28 Whoops ${it.error}",
                     Toast.LENGTH_LONG
                 ).show()
+            }
+        }
+    }
+
+    @Suppress("DeferredResultUnused")
+    private fun shimmeringEffects() {
+        if (containerUser != null) {
+            resultProgress.isVisible = false
+            containerUser.isVisible = true
+            rvMembers.isVisible = false
+            containerUser.startLayoutAnimation()
+            val shimmerEffect = CoroutineScope(Dispatchers.Main)
+            shimmerEffect.async {
+                delay(1500)
+                containerUser.stopShimmer()
+                rvMembers.isVisible = true
+                containerUser.isVisible = false
             }
         }
     }

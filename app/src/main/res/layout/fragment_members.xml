@@ -17,8 +17,33 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/search_input"
         tools:listitem="@layout/item_members"/>
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/containerUser"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/pixels_8"
+        android:layout_marginEnd="@dimen/pixels_8"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_input" >
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvShimUser"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/pixels_8"
+            android:layout_marginEnd="@dimen/pixels_8"
+            android:layout_marginStart="@dimen/pixels_8"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/search_input"
+            tools:listitem="@layout/item_shimmer"/>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

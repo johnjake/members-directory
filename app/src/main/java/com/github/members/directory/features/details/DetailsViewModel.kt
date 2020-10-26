@@ -1,5 +1,6 @@
 package com.github.members.directory.features.details
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,7 +14,8 @@ import kotlinx.coroutines.coroutineScope
  import kotlinx.coroutines.launch
 
 class DetailsViewModel(
-        private val integrator: DetailsRepository
+        private val integrator: DetailsRepository,
+        private val context: Context
 ) : ViewModel() {
     private val mapper = ProfileMapper.getInstance()
     private val mutableList = MutableLiveData<State<List<Members>>>()
@@ -26,16 +28,17 @@ class DetailsViewModel(
 
     fun getProfileDetails(userName: String) {
         viewModelScope.launch {
-            val profile = getDbProfile(userName)
-            val ss = 0
+            val profile: DBProfiles? = getDbProfile(userName)
             if (profile == null) {
-                val data = integrator.getGithubProfile(userName)
-                coroutineScope {
-                    val dbProfile = mapper.fromData(data)
-                    integrator.setDbProfile(dbProfile)
-                }
-                val dataPack = State.Data(data)
-                profileMutable.postValue(dataPack)
+                if(!integrator.checkIsLocal(context)) {
+                    val data = integrator.getGithubProfile(userName)
+                    coroutineScope {
+                        val dbProfile = mapper.fromData(data)
+                        integrator.setDbProfile(dbProfile)
+                    }
+                    val dataPack = State.Data(data)
+                    profileMutable.postValue(dataPack)
+                } else profileMutable.postValue(null)
 
             } else {
                 val data = mapper.fromStorage(profile)
