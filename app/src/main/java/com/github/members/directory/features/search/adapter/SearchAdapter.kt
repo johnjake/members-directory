@@ -10,6 +10,8 @@ class SearchAdapter(
         private val itemListener: OnSearchClickListener
 ) : PagingDataAdapter<SearchProfile, RecyclerView.ViewHolder>(COMPARATOR) {
 
+    // val appDatabase by lazy { GlobalContext.get().koin.get<AppDatabase>() }
+
     interface OnSearchClickListener {
         fun onItemClickListener(username: String)
     }
@@ -18,6 +20,7 @@ class SearchAdapter(
         val item = getItem(position)
         if(item != null) {
             (holder as SearchViewHolder).bind(item, position, itemListener)
+
         }
     }
 

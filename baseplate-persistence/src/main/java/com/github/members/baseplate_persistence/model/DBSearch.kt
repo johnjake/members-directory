@@ -1,10 +1,12 @@
-package com.github.members.directory.data.vo
+package com.github.members.baseplate_persistence.model
 
-import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-@Parcelize
-data class SearchProfile(
+@Entity(tableName = DBSearch.TABLE_NAME_SEARCH)
+data class DBSearch(
+        @PrimaryKey(autoGenerate = true)
+        val searchId: Int,
         val login: String? = "",
         val id: Int = 0,
         val node_id: String? = "",
@@ -24,4 +26,29 @@ data class SearchProfile(
         val type: String? = "",
         val site_admin: Boolean = false,
         val score : Int = 0
-) : Parcelable
+) {
+    constructor(): this(
+            0,
+            "",
+            0,
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            false,
+            0)
+    companion object {
+        const val TABLE_NAME_SEARCH = "table_search"
+    }
+}

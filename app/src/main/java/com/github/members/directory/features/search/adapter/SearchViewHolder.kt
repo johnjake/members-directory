@@ -31,8 +31,8 @@ class SearchViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
             setImageStrokeDrawable(R.drawable.stroke_avatar_pink)
         }
 
-        itemLayout.setOnClickListener {
-            onClickListener.onItemClickListener(user.login)
+        itemLayout.setOnClickListener { _ ->
+            user.login?.let { onClickListener.onItemClickListener(it) }
         }
     }
 

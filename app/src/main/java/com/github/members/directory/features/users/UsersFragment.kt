@@ -1,5 +1,7 @@
 package com.github.members.directory.features.users
 
+import android.content.Context
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,13 +20,14 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.members.directory.R
 import com.github.members.directory.data.mapper.MembersMapper
-import com.github.members.directory.ext.toast
+import com.github.members.directory.di.providesSharedOnline
+import com.github.members.directory.di.providesSharedPrefTheme
 import com.github.members.directory.features.main.MainActivity
 import com.github.members.directory.features.users.adapter.MembersPagingAdapter
+import com.github.members.directory.utils.alertDialog.ListenerCallBack
+import com.github.members.directory.utils.alertDialog.VelloAlertDialog
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.jakewharton.rxbinding3.view.focusChanges
 import kotlinx.android.synthetic.main.fragment_members.*
-import kotlinx.android.synthetic.main.item_members.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -60,7 +63,8 @@ class UsersFragment : Fragment(), MembersPagingAdapter.DetailsOnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAdapter(view)
-        var isDark = getThemeStatePref() ?: false
+        val isLocal: Boolean = providesSharedOnline(view.context) ?: false
+        var isDark = context?.let { providesSharedPrefTheme(it) } ?: false
         if (isDark) {
             // dark theme is on
             search_input.setBackgroundResource(R.drawable.search_input_dark_style)
@@ -69,7 +73,6 @@ class UsersFragment : Fragment(), MembersPagingAdapter.DetailsOnClickListener {
             // light theme is on
             search_input.setBackgroundResource(R.drawable.search_input_style)
             root_layout.setBackgroundColor(ContextCompat.getColor(view.context, R.color.white))
-
         }
 
         fab_switcher.setOnClickListener {
@@ -88,7 +91,11 @@ class UsersFragment : Fragment(), MembersPagingAdapter.DetailsOnClickListener {
         implementSearchMovies()
         search_input.setOnFocusChangeListener { v, hasFocus ->
             if(hasFocus) {
-                v.findNavController().navigate(R.id.action_main_to_search)
+                if(isLocal) {
+                    offLine(v.context)
+                }else {
+                    v.findNavController().navigate(R.id.action_main_to_search)
+                }
             }
         }
     }
@@ -96,6 +103,24 @@ class UsersFragment : Fragment(), MembersPagingAdapter.DetailsOnClickListener {
     override fun onResume() {
         super.onResume()
         bottomVisibility()
+    }
+
+    private fun offLine(context: Context) {
+        val alertDialog = VelloAlertDialog()
+        alertDialog.alertInitialize(
+                context,
+                "Ops! Offline",
+                "Online search is unavailable in offline",
+                Typeface.SANS_SERIF,
+                Typeface.DEFAULT_BOLD,
+                isCancelable = true,
+                isNegativeBtnHide = true)
+        alertDialog.setPositive("OK", object : ListenerCallBack {
+            override fun onClick(dialog: VelloAlertDialog) {
+                dialog.dismiss()
+            }
+        })
+        alertDialog.show()
     }
 
     private fun initAdapter(view: View) {
@@ -136,13 +161,6 @@ class UsersFragment : Fragment(), MembersPagingAdapter.DetailsOnClickListener {
         val editor = pref?.edit()
         editor?.putBoolean(DARK_MODE, isDark)
         editor?.apply()
-    }
-
-    private fun getThemeStatePref(): Boolean? {
-        val pref = context?.getSharedPreferences(SHARED_PREF,
-            AppCompatActivity.MODE_PRIVATE
-        )
-        return pref?.getBoolean(DARK_MODE, false)
     }
 
     private fun bottomVisibility() {

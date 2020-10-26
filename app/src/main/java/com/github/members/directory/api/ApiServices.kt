@@ -28,4 +28,12 @@ interface ApiServices {
             @Query("q") userName: String,
             @Query("page") pageNumber: Int
     ) : SearchData
+
+    @GET("/search/users")
+    suspend fun getTopUserProfile(
+            @Query("q") userName: String,
+            @Query("ref") reference: String,
+            @Query("s") followers: String,
+            @Query("type") type: String
+    ): SearchData
 }

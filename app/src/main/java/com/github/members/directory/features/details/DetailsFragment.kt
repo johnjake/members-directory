@@ -17,6 +17,7 @@ import com.github.members.directory.data.State
 import com.github.members.directory.data.vo.Members
 import com.github.members.directory.data.vo.Profiles
 import com.github.members.directory.di.providesAvatar
+import com.github.members.directory.di.providesSharedPrefTheme
 import com.github.members.directory.ext.toast
 import com.github.members.directory.features.details.adapter.FollowingAdapter
 import com.github.members.directory.features.main.MainActivity
@@ -58,7 +59,7 @@ class DetailsFragment : Fragment() {
            // viewModel.getFollowerList(arg.username)
         }
 
-        val isDark = getThemeStatePref() ?: false
+        val isDark = context?.let { providesSharedPrefTheme(it) } ?: false
         if (isDark) {
             detailsLayout.setBackgroundColor(ContextCompat.getColor(view.context, R.color.black))
         } else {
@@ -88,13 +89,6 @@ class DetailsFragment : Fragment() {
             layoutManager = resultLayout
             adapter = followerAdapter
         }
-    }
-
-    private fun getThemeStatePref(): Boolean? {
-        val pref = context?.getSharedPreferences(UsersFragment.SHARED_PREF,
-                AppCompatActivity.MODE_PRIVATE
-        )
-        return pref?.getBoolean(UsersFragment.DARK_MODE, false)
     }
 
     private fun bottomNavigationViewVisibility() {

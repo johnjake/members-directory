@@ -22,4 +22,9 @@
     <string name="biography">Biography:</string>
     <string name="label_error">Something went wrong, please try again</string>
     <string name="clear">CLEAR</string>
+    <string name="user">User</string>
+    <string name="top_members">Top Members</string>
+    <string name="internet_problem">Internet Problem</string>
+    <string name="would_you_like_to_use_offline">Would you like to use offline?</string>
+    <string name="search_result">Search Result</string>
 </resources>
