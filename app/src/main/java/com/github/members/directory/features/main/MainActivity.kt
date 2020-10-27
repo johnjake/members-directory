@@ -52,17 +52,17 @@ class MainActivity : AppCompatActivity() {
             override fun onNavigationItemSelected(@NonNull item: MenuItem): Boolean {
                 when (item.itemId) {
                     R.id.destination_movies -> {
-                        openFragment(UsersFragment.newInstance(USER_FRAGMENT))
+                        openFragment(UsersFragment.newInstance(USER_FRAGMENT), USER_FRAGMENT)
                         return true
                     }
                     R.id.destination_discover -> {
                         val instanceDiscover = HistoryFragment.newInstance(REPOSITORY_FRAGMENT)
                         instanceDiscover.arguments = bundle
-                        openFragment(instanceDiscover)
+                        openFragment(instanceDiscover, REPOSITORY_FRAGMENT)
                         return true
                     }
                     R.id.destination_visited -> {
-                        openFragment(VisitedFragment.newInstance(VISITED_FRAGMENT))
+                        openFragment(VisitedFragment.newInstance(VISITED_FRAGMENT), VISITED_FRAGMENT)
                         return true
                     }
                 }
@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    fun openFragment(fragment: Fragment) {
+    fun openFragment(fragment: Fragment, fragmentName: String) {
         val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.nav_host_fragment, fragment)
         transaction.addToBackStack(null)

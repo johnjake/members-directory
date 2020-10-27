@@ -18,7 +18,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/search_input"
+        app:layout_constraintTop_toBottomOf="@+id/userSearch"
         tools:listitem="@layout/item_members"/>
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/containerUser"
@@ -29,7 +29,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_input" >
+        app:layout_constraintTop_toBottomOf="@+id/userSearch" >
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvShimUser"
             android:layout_width="match_parent"
@@ -40,7 +40,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/search_input"
+            app:layout_constraintTop_toBottomOf="@+id/userSearch"
             tools:listitem="@layout/item_shimmer"/>
     </com.facebook.shimmer.ShimmerFrameLayout>
 
@@ -62,7 +62,7 @@
         android:contentDescription="@string/toDark_mood" />
 
     <EditText
-        android:id="@+id/search_input"
+        android:id="@+id/userSearch"
         android:drawablePadding="@dimen/pixels_8"
         android:drawableStart="@drawable/ic_search_gray_24dp"
         android:textColor="@color/content_text_color"
@@ -80,7 +80,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ProgressBar
-        android:id="@+id/resultProgress"
+        android:id="@+id/userProgress"
         android:layout_width="75dp"
         android:layout_height="75dp"
         app:layout_constraintLeft_toLeftOf="parent"

@@ -31,7 +31,11 @@ import com.github.members.directory.features.search.offline.OfflineAdapter
 import com.github.members.directory.features.search.shimmering.SearchShimmerAdapter
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.fragment_search.*
-import kotlinx.android.synthetic.main.fragment_search.search_input
+import kotlinx.android.synthetic.main.fragment_search.retryButton as bntRetry
+import kotlinx.android.synthetic.main.fragment_search.searchLayout as searchLayout
+import kotlinx.android.synthetic.main.fragment_search.searchProgress as searchProgress
+import kotlinx.android.synthetic.main.fragment_search.rvShimSearch as rvShimSearch
+import kotlinx.android.synthetic.main.fragment_search.containerSearch as containerSearch
 import kotlinx.android.synthetic.main.layout_search.rvSearch
 import kotlinx.android.synthetic.main.toolbar_search.*
 import kotlinx.coroutines.*
@@ -46,10 +50,10 @@ class SearchFragment : Fragment(), SearchAdapter.OnSearchClickListener {
     private lateinit var resultLayout: LinearLayoutManager
     private val shimmerAdapter: SearchShimmerAdapter by lazy { SearchShimmerAdapter() }
     private val searchAdapter: SearchAdapter by lazy { SearchAdapter(this) }
+    private val offlineAdapter: OfflineAdapter by lazy { OfflineAdapter() }
     private val viewModel: SearchViewModel by inject<SearchViewModel>()
     private var searchJob: Job? = null
     private var isOnline: Boolean = false
-    private val offlineAdapter: OfflineAdapter by lazy { OfflineAdapter() }
 
     private fun implementSearch(query: String) {
         searchJob?.cancel()
@@ -84,7 +88,7 @@ class SearchFragment : Fragment(), SearchAdapter.OnSearchClickListener {
             searchLayout.setBackgroundColor(ContextCompat.getColor(view.context, R.color.white))
             toolbarSearch.setBackgroundColor(ContextCompat.getColor(view.context, R.color.white))
         }
-        retry_button.setOnClickListener {
+        bntRetry.setOnClickListener {
             searchAdapter.retry()
         }
     }
@@ -142,7 +146,7 @@ class SearchFragment : Fragment(), SearchAdapter.OnSearchClickListener {
         }
         searchAdapter.addLoadStateListener { loadState ->
             searchProgress.isVisible = loadState.source.refresh is LoadState.Loading
-            if (isOnline) { retry_button.isVisible = loadState.source.refresh is LoadState.Error }
+            if (isOnline) { bntRetry.isVisible = loadState.source.refresh is LoadState.Error }
             // Toast on any error, regardless of whether it came from RemoteMediator or PagingSource
             val errorState = loadState.source.append as? LoadState.Error
                     ?: loadState.source.prepend as? LoadState.Error

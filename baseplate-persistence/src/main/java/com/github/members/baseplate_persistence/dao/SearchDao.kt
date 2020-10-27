@@ -13,4 +13,6 @@ abstract class SearchDao {
 
     @Query("SELECT * FROM table_search GROUP BY login")
     abstract suspend fun getUserSearch(): List<DBSearch>
+
+
 }

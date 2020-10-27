@@ -68,12 +68,12 @@ class UsersFragment : Fragment(), MembersPagingAdapter.DetailsOnClickListener {
         var isDark = context?.let { providesSharedPrefTheme(it) } ?: false
         if (isDark) {
             // dark theme is on
-            search_input.setBackgroundResource(R.drawable.search_input_dark_style)
+            userSearch.setBackgroundResource(R.drawable.search_input_dark_style)
             root_layout.setBackgroundColor(ContextCompat.getColor(view.context, R.color.black))
 
         } else {
             // light theme is on
-            search_input.setBackgroundResource(R.drawable.search_input_style)
+            userSearch.setBackgroundResource(R.drawable.search_input_style)
             root_layout.setBackgroundColor(ContextCompat.getColor(view.context, R.color.white))
 
         }
@@ -81,18 +81,18 @@ class UsersFragment : Fragment(), MembersPagingAdapter.DetailsOnClickListener {
         fab_switcher.setOnClickListener {
             isDark = !isDark
             if (isDark) {
-                search_input.setBackgroundResource(R.drawable.search_input_dark_style)
+                userSearch.setBackgroundResource(R.drawable.search_input_dark_style)
                 root_layout.setBackgroundColor(ContextCompat.getColor(view.context, R.color.black))
                 saveThemeStatePref(isDark)
 
             } else {
-                search_input.setBackgroundResource(R.drawable.search_input_style)
+                userSearch.setBackgroundResource(R.drawable.search_input_style)
                 root_layout.setBackgroundColor(ContextCompat.getColor(view.context, R.color.white))
                 saveThemeStatePref(isDark)
             }
         }
         implementSearchMovies()
-        search_input.setOnFocusChangeListener { v, hasFocus ->
+        userSearch.setOnFocusChangeListener { v, hasFocus ->
             if(hasFocus) {
                 if(isLocal) {
                     v.findNavController().navigate(R.id.action_main_to_search)
@@ -159,7 +159,7 @@ class UsersFragment : Fragment(), MembersPagingAdapter.DetailsOnClickListener {
 
         memberAdapter.addLoadStateListener { loadState ->
             val resultLoading: Boolean = loadState.source.refresh is LoadState.Loading
-            if (resultProgress != null) resultProgress.isVisible = resultLoading ?: false
+            if (userProgress != null) userProgress.isVisible = resultLoading ?: false
             if (userButton != null) {
                 userButton.isVisible = loadState.source.refresh is LoadState.Error
             }
@@ -181,7 +181,7 @@ class UsersFragment : Fragment(), MembersPagingAdapter.DetailsOnClickListener {
     @Suppress("DeferredResultUnused")
     private fun shimmeringEffects() {
         if (containerUser != null) {
-            resultProgress.isVisible = false
+            userProgress.isVisible = false
             containerUser.isVisible = true
             rvMembers.isVisible = false
             containerUser.startLayoutAnimation()

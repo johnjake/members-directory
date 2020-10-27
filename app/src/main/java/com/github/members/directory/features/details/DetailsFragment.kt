@@ -1,6 +1,7 @@
 package com.github.members.directory.features.details
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -73,10 +74,19 @@ class DetailsFragment : Fragment() {
         arguments?.let {
             val arg = DetailsFragmentArgs.fromBundle(it)
             if(isLocal) {
-                viewModel.getFollowerList(arg.username)
+                try {
+                    viewModel.getFollowerList(arg.username)
+                } catch (ex: Exception) {
+                    activity?.toast("403 Api request limit exceed!")
+                }
                 providesSaveInternetStatePref(view.context, false)
             }
-            viewModel.getProfileDetails(arg.username)
+            try {
+                viewModel.getProfileDetails(arg.username)
+            } catch (ex: Exception) {
+                activity?.toast("403 Api request limit exceed!")
+            }
+
         }
 
         val isDark = context?.let { providesSharedPrefTheme(it) } ?: false
@@ -91,9 +101,6 @@ class DetailsFragment : Fragment() {
         super.onStart()
         back.setOnClickListener {
             MainActivity.onBackPress = true
-            MainActivity.onVisitedFragment = false
-            MainActivity.onDetailsFragment = false
-            this.findNavController().popBackStack()
         }
     }
 
@@ -147,7 +154,6 @@ class DetailsFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     private fun handleProfileSuccess(profile: Profiles?) {
         val name = profile?.login ?: ""
-        profileName.text = name
         profileName.text = profile?.login
         follower.text = profile?.followers.toString()
         following.text = profile?.following.toString()
@@ -156,8 +162,8 @@ class DetailsFragment : Fragment() {
         userName.text = "Name: ${profile?.name}"
         githubUrl.text = "Blog: ${profile?.blog}"
         imgProfile.load(imgUrl + profile?.id)
-        var url = imgUrl + profile?.id
-        // getImage(url, name)
+        val url = imgUrl + profile?.id
+        getImage(url, name)
     }
 
     private fun getImage(url: String, imageName: String) {
