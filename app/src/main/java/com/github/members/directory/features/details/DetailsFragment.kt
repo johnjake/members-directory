@@ -157,7 +157,7 @@ class DetailsFragment : Fragment() {
         githubUrl.text = "Blog: ${profile?.blog}"
         imgProfile.load(imgUrl + profile?.id)
         var url = imgUrl + profile?.id
-        getImage(url, name)
+        // getImage(url, name)
     }
 
     private fun getImage(url: String, imageName: String) {
@@ -182,7 +182,7 @@ class DetailsFragment : Fragment() {
 
     private fun handleFollowerSuccess(list: List<Members>) {
         if(list.isNotEmpty()) {
-            followerAdapter.dataSource = list
+            followerAdapter.dataSource = list.take(8)
         }
     }
 
