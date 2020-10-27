@@ -21,6 +21,7 @@ members-directory app is about users directory listing features are, list of Git
     Concurrency Library: Coroutine-1.3.7
     Reactive Extensions: RxJava2 (2.2.10)
     RecyclerView Paging: Paging3 (3.0.0-alpha07)
+    Navigation Component: 2.3.1
 
 USER API: Github users list can be obtained from https://api.github.com/users?since=0  in JSON format, example [username: tawk](https://api.github.com/users?since=9743939).
 
