@@ -38,4 +38,7 @@ abstract class MembersDao {
     @Query("SELECT * FROM members")
     abstract fun getRepositoryMembers(): PagingSource<Int, DBMembers>
 
+    @Query("SELECT * FROM members WHERE login LIKE :username")
+    abstract suspend fun getSearchFromDb(username: String): List<DBMembers>
+
 }

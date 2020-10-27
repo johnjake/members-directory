@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -17,15 +18,18 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.members.directory.R
+import com.github.members.directory.data.State
+import com.github.members.directory.data.vo.Members
 import com.github.members.directory.di.providesSharedPrefTheme
 import com.github.members.directory.ext.isOnline
+import com.github.members.directory.ext.toast
 import com.github.members.directory.features.Shimmer
 import com.github.members.directory.features.main.MainActivity
 import com.github.members.directory.features.search.adapter.SearchAdapter
 import com.github.members.directory.features.search.loader.SearchLoaderStateAdapter
+import com.github.members.directory.features.search.offline.OfflineAdapter
 import com.github.members.directory.features.search.shimmering.SearchShimmerAdapter
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.android.synthetic.main.fragment_members.*
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.fragment_search.search_input
 import kotlinx.android.synthetic.main.layout_search.rvSearch
@@ -38,13 +42,14 @@ import org.koin.android.ext.android.inject
 import kotlinx.android.synthetic.main.toolbar_search.search_back as backMain
 
 class SearchFragment : Fragment(), SearchAdapter.OnSearchClickListener {
-
+    private lateinit var offlineLayout: LinearLayoutManager
     private lateinit var resultLayout: LinearLayoutManager
     private val shimmerAdapter: SearchShimmerAdapter by lazy { SearchShimmerAdapter() }
     private val searchAdapter: SearchAdapter by lazy { SearchAdapter(this) }
     private val viewModel: SearchViewModel by inject<SearchViewModel>()
     private var searchJob: Job? = null
     private var isOnline: Boolean = false
+    private val offlineAdapter: OfflineAdapter by lazy { OfflineAdapter() }
 
     private fun implementSearch(query: String) {
         searchJob?.cancel()
@@ -67,6 +72,7 @@ class SearchFragment : Fragment(), SearchAdapter.OnSearchClickListener {
         bottomNavigationViewVisibility()
         initPagingAdapter()
         initShimmerAdapter(view)
+        offlineDataObserver()
         val query = savedInstanceState?.getString(LAST_SEARCH_QUERY) ?: DEFAULT_QUERY
         implementSearch(query)
         initSearch(query)
@@ -97,7 +103,28 @@ class SearchFragment : Fragment(), SearchAdapter.OnSearchClickListener {
     override fun onResume() {
         super.onResume()
         isOnline = context?.let { activity?.isOnline(it) } ?: false
+        if(isOnline) {
+            rvSearch.isVisible = true
+            rvOffSearch.isVisible = false
+            searchProgress.isVisible = false
+        } else {
+            rvSearch.isVisible = false
+            rvOffSearch.isVisible = true
+            initOfflineAdapter()
+        }
         shimmeringEffects()
+    }
+
+    private fun initOfflineAdapter() {
+        offlineLayout = LinearLayoutManager(requireContext()).apply {
+            orientation = LinearLayoutManager.VERTICAL
+        }
+        val decoration = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
+        rvOffSearch.apply {
+            layoutManager = offlineLayout
+            adapter = offlineAdapter
+            addItemDecoration(decoration)
+        }
     }
 
     private fun initPagingAdapter() {
@@ -160,7 +187,10 @@ class SearchFragment : Fragment(), SearchAdapter.OnSearchClickListener {
     private fun updateRepoListFromInput() {
         search_input.text.trim().let {
             if (it.isNotEmpty()) {
-                implementSearch(it.toString())
+                when {
+                    isOnline -> implementSearch(it.toString())
+                    else -> viewModel.searchFromDb(it.toString())
+                }
             }
         }
     }
@@ -197,6 +227,32 @@ class SearchFragment : Fragment(), SearchAdapter.OnSearchClickListener {
     private fun bottomNavigationViewVisibility() {
         val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.bottom_nav)
         bottomNavigationView?.visibility = View.GONE
+    }
+
+    private fun offlineDataObserver() {
+        viewModel.stateProfile.observe(viewLifecycleOwner, Observer { state -> handlerOfflineData(state) })
+    }
+
+    private fun handlerOfflineData(state: State<List<Members>>) {
+        when(state) {
+            is State.Data -> handlerOfflineSuccess(state.data)
+            is State.Error -> handleProfileFailed(state.error)
+            else -> handleProfileNull()
+        }
+    }
+
+    private fun handlerOfflineSuccess(list: List<Members>) {
+        if(list.isNotEmpty()) {
+            offlineAdapter.dataSource = list
+        }
+    }
+
+    private fun handleProfileFailed(error: Throwable) {
+        activity?.toast("Error: ${error.localizedMessage}")
+    }
+
+    private fun handleProfileNull() {
+        activity?.toast("Error: no data found")
     }
 
     companion object{

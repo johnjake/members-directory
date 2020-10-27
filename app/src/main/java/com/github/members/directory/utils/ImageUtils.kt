@@ -21,8 +21,8 @@ class ImageUtils {
         // https://stackoverflow.com/a/7780289/1076574
         @SuppressLint("SimpleDateFormat")
         @JvmStatic
-        fun saveBitmap(ctx: Context, bitmap: Bitmap): File {
-            val filename = "${StringUtils.createFilename()}.JPG"
+        fun saveBitmap(ctx: Context, bitmap: Bitmap, imageName: String): File {
+            val filename = "${imageName}.JPG"
             val file = File(ctx.cacheDir, filename)
             file.createNewFile()
 

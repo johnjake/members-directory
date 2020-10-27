@@ -101,6 +101,10 @@ class UsersFragment : Fragment(), MembersPagingAdapter.DetailsOnClickListener {
                 }
             }
         }
+
+        userButton.setOnClickListener {
+            memberAdapter.retry()
+        }
     }
 
     override fun onResume() {
@@ -156,6 +160,9 @@ class UsersFragment : Fragment(), MembersPagingAdapter.DetailsOnClickListener {
         memberAdapter.addLoadStateListener { loadState ->
             val resultLoading: Boolean = loadState.source.refresh is LoadState.Loading
             if (resultProgress != null) resultProgress.isVisible = resultLoading ?: false
+            if (userButton != null) {
+                userButton.isVisible = loadState.source.refresh is LoadState.Error
+            }
             // Toast on any error, regardless of whether it came from RemoteMediator or PagingSource
             val errorState = loadState.source.append as? LoadState.Error
                 ?: loadState.source.prepend as? LoadState.Error

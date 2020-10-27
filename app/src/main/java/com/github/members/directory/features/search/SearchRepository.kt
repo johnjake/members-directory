@@ -5,6 +5,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.github.members.baseplate_persistence.AppDatabase
+import com.github.members.baseplate_persistence.model.DBMembers
 import com.github.members.directory.api.ApiServices
 import com.github.members.directory.data.vo.SearchProfile
 import kotlinx.coroutines.flow.Flow
@@ -18,6 +19,13 @@ class SearchRepository(
         return Pager(config = PagingConfig(pageSize = DEFAULT_PAGE_SIZE, enablePlaceholders = false),
                 pagingSourceFactory = { SearchPagingSource(query = query, apiServices = apiServices, appDatabase, context) }
                 ).flow
+    }
+
+    override suspend fun getSearchFromDb(query: String): List<DBMembers> {
+        val dbQuery = "%${query.replace(' ', '%')}%"
+        val qs = appDatabase.membersDao().getSearchFromDb(dbQuery)
+        val blocker = 0
+        return qs
     }
 
     companion object {

@@ -24,7 +24,14 @@
                 android:layout_marginEnd="@dimen/pixels_10"
                 android:layout_marginTop="@dimen/pixels_10"
                 android:gravity="center">
-
+                <ProgressBar
+                    android:id="@+id/detailsProgress"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:layout_marginTop="@dimen/pixels_76"
+                    android:layout_marginStart="@dimen/pixels_76"
+                    android:visibility="gone"
+                    />
                 <com.makeramen.roundedimageview.RoundedImageView
                     android:id="@+id/imgDetail"
                     android:layout_width="@dimen/pixels_230"

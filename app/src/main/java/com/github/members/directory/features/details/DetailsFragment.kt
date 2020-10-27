@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -25,8 +27,10 @@ import com.github.members.directory.ext.toast
 import com.github.members.directory.features.details.adapter.FollowingAdapter
 import com.github.members.directory.features.main.MainActivity
 import com.github.members.directory.features.users.UsersFragment
+import com.github.members.directory.utils.ImageUtils
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.fragment_details.*
+import kotlinx.coroutines.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import kotlinx.android.synthetic.main.toolbar_profile_details.toolbar_back as back
@@ -44,6 +48,14 @@ class DetailsFragment : Fragment() {
     private val viewModel: DetailsViewModel by viewModel()
     private val followerAdapter: FollowingAdapter by lazy { FollowingAdapter() }
     private val imgUrl = providesAvatar()
+    private lateinit var progress: ProgressBar
+    private val jobCoroutine = Job()
+    private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+        Timber.e("Error Occurred at: $throwable")
+    }
+
+    private val coroutineScope = CoroutineScope(Dispatchers.IO + jobCoroutine + exceptionHandler)
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -53,6 +65,7 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         bottomNavigationViewVisibility()
+        progress = view.findViewById(R.id.detailsProgress)
         userProfileObserver()
         followerObserver()
         initAdapter(view)
@@ -114,6 +127,7 @@ class DetailsFragment : Fragment() {
     private fun handleDataProfile(state: State<Profiles>?) {
         when(state) {
             is State.Data -> {
+                progress.isVisible = true
                 val data = state.data ?: null
                 handleProfileSuccess(data)
             }
@@ -132,6 +146,8 @@ class DetailsFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     private fun handleProfileSuccess(profile: Profiles?) {
+        val name = profile?.login ?: ""
+        profileName.text = name
         profileName.text = profile?.login
         follower.text = profile?.followers.toString()
         following.text = profile?.following.toString()
@@ -140,6 +156,20 @@ class DetailsFragment : Fragment() {
         userName.text = "Name: ${profile?.name}"
         githubUrl.text = "Blog: ${profile?.blog}"
         imgProfile.load(imgUrl + profile?.id)
+        var url = imgUrl + profile?.id
+        getImage(url, name)
+    }
+
+    private fun getImage(url: String, imageName: String) {
+        coroutineScope.launch {
+            val imgBitmap = context?.let { ImageUtils.getCoilBitmap(coroutineScope, it, url) }
+            context?.let { conText ->
+                imgBitmap?.let { img ->
+                    ImageUtils.saveBitmap(conText, img, imageName)
+                }
+            }
+            progress.isVisible = false
+        }
     }
 
     private fun handleProfileFailed(error: Throwable) {

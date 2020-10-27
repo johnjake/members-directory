@@ -18,7 +18,7 @@ import com.github.members.baseplate_persistence.model.DBSearch
         DBRemoteKeys::class,
         DBProfiles::class,
         DBSearch::class],
-    version = 6,
+    version = 1,
     exportSchema = false
 )
 
