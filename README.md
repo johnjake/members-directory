@@ -1,6 +1,6 @@
 # Github Name Directory   ![alt text](https://github.com/johnjake/members-directory/blob/master/app/src/main/res/drawable/ic_github_logo.png)
 
-members-directory app is about users directory listing features are, list of Github users, including night mode, user profile, search user or members and offline listing and search.
+members-directory app is about users directory listing features are list of Github users, including night mode, user profile, search user or members and offline listing and search.
 
     IDE: Android Studio 4.1 Runtime Version: 1.8.0 VM: OpenJDK 64-Bit
 
