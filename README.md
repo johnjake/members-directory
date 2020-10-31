@@ -23,9 +23,9 @@ members-directory app is about users directory listing features are list of Gith
     RecyclerView Paging: Paging3 (3.0.0-alpha07)
     Navigation Component: 2.3.1
 
-USER API: Github users list can be obtained from https://api.github.com/users?since=0  in JSON format, example [username: tawk](https://api.github.com/users?since=9743939).
+USER API: Github users list can be obtained from https://api.github.com/users?since=0  in JSON format.
 
-PROFILE API: Profile info can be obtained from https://api.github.com/users/[username] in JSON format, example [profile: tawk](https://api.github.com/users/tawk).
+PROFILE API: Profile info can be obtained from https://api.github.com/users/[username] in JSON format.
 
    
    Offline Mode:
