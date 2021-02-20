@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.github.members.directory.BuildConfig
 import com.github.members.directory.R
 import com.github.members.directory.ext.isOnline
 import com.github.members.directory.features.main.MainActivity
@@ -13,6 +14,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class SplashActivity : AppCompatActivity() {
     private val scope = CoroutineScope(Dispatchers.IO)
@@ -67,6 +69,8 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun launchActivity() {
+        val packageName = BuildConfig.APPLICATION_ID
+        Timber.e("######################## $packageName")
         startActivity(Intent(this, MainActivity::class.java).apply {
             putExtra("INTERNET", "1")
         })

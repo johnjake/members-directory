@@ -2,6 +2,7 @@ package com.github.members.directory.features.main
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -12,7 +13,13 @@ import com.github.members.directory.R
 import com.github.members.directory.features.history.HistoryFragment
 import com.github.members.directory.features.users.UsersFragment
 import com.github.members.directory.features.visited.VisitedFragment
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.FirebaseApp
+import com.google.firebase.FirebaseOptions
+import com.google.firebase.messaging.FirebaseMessaging
+import timber.log.Timber
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -35,6 +42,32 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initializedUI()
+        getAccessTokenFromDevice()
+    }
+
+    private fun getAccessTokenFromDevice() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Timber.d("Fetching FCM registration token failed $task.exception")
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val accessToken = task.result
+
+            // Log and toast
+
+            Timber.e(accessToken)
+        })
+    }
+
+    private fun initFirebase() {
+        val options = FirebaseOptions.Builder()
+            .setApplicationId("APP ID") // Required for Analytics.
+            .setProjectId("PROJECT ID") // Required for Firebase Installations.
+            .setApiKey("GOOGLE API KEY") // Required for Auth.
+            .build()
+        FirebaseApp.initializeApp(this, options, "instafood")
     }
 
     private fun initializedUI() {
@@ -62,7 +95,10 @@ class MainActivity : AppCompatActivity() {
                         return true
                     }
                     R.id.destination_visited -> {
-                        openFragment(VisitedFragment.newInstance(VISITED_FRAGMENT), VISITED_FRAGMENT)
+                        openFragment(
+                            VisitedFragment.newInstance(VISITED_FRAGMENT),
+                            VISITED_FRAGMENT
+                        )
                         return true
                     }
                 }

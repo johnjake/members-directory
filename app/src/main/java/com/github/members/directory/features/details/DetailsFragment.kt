@@ -1,18 +1,16 @@
 package com.github.members.directory.features.details
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.github.members.directory.R
@@ -21,20 +19,18 @@ import com.github.members.directory.data.vo.Members
 import com.github.members.directory.data.vo.Profiles
 import com.github.members.directory.di.providesAvatar
 import com.github.members.directory.di.providesSaveInternetStatePref
-import com.github.members.directory.di.providesSharedOnline
 import com.github.members.directory.di.providesSharedPrefTheme
 import com.github.members.directory.ext.isOnline
 import com.github.members.directory.ext.toast
 import com.github.members.directory.features.details.adapter.FollowingAdapter
 import com.github.members.directory.features.main.MainActivity
-import com.github.members.directory.features.users.UsersFragment
 import com.github.members.directory.utils.ImageUtils
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.fragment_details.*
+import kotlinx.android.synthetic.main.toolbar_profile_details.*
 import kotlinx.coroutines.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
-import kotlinx.android.synthetic.main.toolbar_profile_details.toolbar_back as back
 import kotlinx.android.synthetic.main.toolbar_profile_details.userProfileName as profileName
 import kotlinx.android.synthetic.main.fragment_details.txtFollowerNumber as follower
 import kotlinx.android.synthetic.main.fragment_details.txtFollowingNumber as following
@@ -99,8 +95,9 @@ class DetailsFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        back.setOnClickListener {
+        toolDetails.setOnClickListener { it ->
             MainActivity.onBackPress = true
+            it.findNavController().popBackStack()
         }
     }
 

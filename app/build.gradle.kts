@@ -6,6 +6,7 @@ plugins {
     id("kotlin-android-extensions")
     id("androidx.navigation.safeargs.kotlin")
     id("kotlin-kapt")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -130,6 +131,9 @@ dependencies {
     implementation(Libs.androidCoroutines)
     implementation(Libs.coil)
     implementation(Libs.paging)
+    implementation("com.google.firebase:firebase-bom:26.5.0")
+    implementation ("com.google.firebase:firebase-messaging:21.0.1")
+
     testImplementation(Libs.jUnit)
     androidTestImplementation(Libs.jUnitExtension)
     androidTestImplementation(Libs.expressoCore)
