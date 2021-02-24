@@ -19,7 +19,7 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="16dp" />
     <ImageView
-        android:id="@+id/toolbar_back"
+        android:id="@+id/toolDetails"
         android:layout_width="@dimen/pixels_50"
         android:layout_height="@dimen/pixels_48"
         app:layout_constraintStart_toStartOf="@id/leftGuideline"
@@ -39,5 +39,5 @@
         android:textStyle="bold"
         android:textSize="22sp"
         app:layout_constraintEnd_toStartOf="@+id/rightGuideline"
-        app:layout_constraintStart_toStartOf="@id/toolbar_back" />
+        app:layout_constraintStart_toStartOf="@id/toolDetails" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -28,4 +28,6 @@
     <string name="would_you_like_to_use_offline">Would you like to use offline?</string>
     <string name="search_result">Search Result</string>
     <string name="retry">Retry</string>
+    <string name="msg_token_fmt">AccessToken</string>
+    <string name="default_notification_channel_id" translatable="false">com.github.members.directory.dev.notification_channel</string>
 </resources>

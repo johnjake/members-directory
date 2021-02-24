@@ -9,9 +9,10 @@
         android:id="@+id/userFragment"
         android:name="com.github.members.directory.features.users.UsersFragment"
         tools:layout="@layout/fragment_members"
-        android:label="CinemaFragment" >
+        android:label="user_fragment" >
         <action
             android:id="@+id/action_main_to_details"
+            app:popUpTo="@id/userFragment"
             app:destination="@id/detailsFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
@@ -22,7 +23,8 @@
             app:exitAnim="@anim/anim_fadeout" />
         <action
             android:id="@+id/action_main_to_visitedFragment"
-            app:destination="@id/discoverFragment" />
+            app:destination="@id/discoverFragment"
+            />
         <action
             android:id="@+id/action_main_to_historyFragment"
             app:destination="@+id/historyFragment"

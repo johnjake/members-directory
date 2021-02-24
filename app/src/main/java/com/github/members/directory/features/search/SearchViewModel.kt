@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+
 import com.github.members.directory.data.State
 import com.github.members.directory.data.mapper.MembersMapper
+
 import com.github.members.directory.data.vo.Members
 import com.github.members.directory.data.vo.SearchProfile
 import kotlinx.coroutines.flow.Flow
@@ -43,10 +45,10 @@ class SearchViewModel(
         viewModelScope.launch {
             val mutableList: MutableList<Members> = arrayListOf()
             val data = integrator.getSearchFromDb(query)
-            data.forEach { user ->
-                val profile = mapper.fromStorage(user)
-                mutableList.add(profile)
-            }
+             data.forEach { user ->
+                 val profile = mapper.fromStorage(user)
+                 mutableList.add(profile)
+             }
             if(mutableList.isNotEmpty()) {
                 val dataPack = State.Data(mutableList)
                 dbProfile.postValue(dataPack)

@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.github.members.baseplate_persistence.model.DBMembers
+import com.github.members.baseplate_persistence.model.DBSearch
 
 @Dao
 abstract class MembersDao {

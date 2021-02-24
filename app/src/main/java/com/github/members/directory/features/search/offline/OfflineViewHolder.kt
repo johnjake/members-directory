@@ -28,5 +28,4 @@ class OfflineViewHolder(private val view: View) : RecyclerView.ViewHolder(view) 
             return OfflineViewHolder(view)
         }
     }
-
 }
