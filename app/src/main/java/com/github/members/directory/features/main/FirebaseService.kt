@@ -28,7 +28,6 @@ class FirebaseService: FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
-
         Timber.e("reading remote message...")
         Timber.e("collapseKey: ${remoteMessage.collapseKey}")
         Timber.e("data: ${remoteMessage.data}")
@@ -40,16 +39,13 @@ class FirebaseService: FirebaseMessagingService() {
         val body = remoteMessage.notification?.body ?: ""
         Timber.e("Notification Title: $title")
         Timber.e("Notification Body: $body")
-
         addNotification(title, body)
-
         Timber.e("reading data...")
         if (remoteMessage.data.isNotEmpty()) {
             remoteMessage.data.forEach { (key, value) ->
                 Timber.d("$key: $value")
             }
         }
-
     }
 
     //Whenewer you need FCM token, just call this static method to get it.

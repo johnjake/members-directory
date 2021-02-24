@@ -132,6 +132,7 @@ dependencies {
     implementation(Libs.coil)
     implementation(Libs.paging)
     implementation("com.google.firebase:firebase-bom:26.5.0")
+
     implementation ("com.google.firebase:firebase-messaging:21.0.1")
 
     testImplementation(Libs.jUnit)

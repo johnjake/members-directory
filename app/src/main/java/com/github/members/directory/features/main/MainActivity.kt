@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         initializedUI()
         getAccessTokenFromDevice()
+        subscribeTopic()
     }
 
     private fun getAccessTokenFromDevice() {
@@ -59,6 +60,17 @@ class MainActivity : AppCompatActivity() {
 
             Timber.e(accessToken)
         })
+    }
+
+    private fun subscribeTopic() {
+        FirebaseMessaging.getInstance().subscribeToTopic("WhatsNew")
+            .addOnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Timber.e("invalid!!!")
+                } else {
+                    Toast.makeText(this@MainActivity, "success!", Toast.LENGTH_SHORT).show()
+                }
+            }
     }
 
     private fun initFirebase() {
